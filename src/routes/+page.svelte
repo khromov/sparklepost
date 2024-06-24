@@ -39,8 +39,8 @@
             {#each Array(3) as _, i}
                 <div class="swiper-slide">
                     <ScrollableView>
-                        {#each Array(10) as _, i}
-                            <Message />
+                        {#each Array(10) as _, x}
+                            <Message tab={i} number={x}  />
                         {/each}
                     </ScrollableView>
                 </div>
