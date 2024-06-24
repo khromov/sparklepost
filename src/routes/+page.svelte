@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Message from '$lib/Message.svelte';
+	import { activeTabIndex } from '$lib/stores/tab';
 	import { onMount } from 'svelte';
 	import Swiper from 'swiper/bundle';
 	import 'swiper/css/bundle';
@@ -19,38 +20,34 @@
 			longSwipesRatio: 0.1,
 			on: {
 				slideChange: function (e) {
-					activeIndex = e.activeIndex;
+					$activeTabIndex = e.activeIndex;
 				}
 			}
 		});
 	});
 
-	function handleTabClick(index: number) {
+	function handleTabChange(event: CustomEvent<number>) {
 		if (swiper) {
-			swiper.slideTo(index);
+			swiper.slideTo(event.detail);
 		}
 	}
 </script>
 
-<div class="content">
-	<div class="swiper" bind:this={swiperEl}>
-		<div class="swiper-wrapper">
-			{#each tabs as tab}
-				<div class="swiper-slide">
-					{#each Array(10) as _, i}
-						<Message />
-					{/each}
-				</div>
-			{/each}
-		</div>
+<div class="swiper" bind:this={swiperEl}>
+	<div class="swiper-wrapper">
+		{#each tabs as tab}
+			<div class="swiper-slide">
+				{#each Array(10) as _, i}
+					<Message />
+				{/each}
+			</div>
+		{/each}
 	</div>
 </div>
 
 <style>
-	/*
 	:global(.swiper-slide) {
 		height: auto;
 		overflow-y: auto;
 	}
-    */
 </style>

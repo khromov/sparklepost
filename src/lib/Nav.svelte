@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 
-	export let tabs = ['For you', 'Following', 'Svelte Society'];
-	export let activeIndex = 0;
+	import { tabs, activeTabIndex } from './stores/tab';
 
 	const dispatch = createEventDispatcher();
 
@@ -13,9 +12,9 @@
 
 <nav>
 	{#each tabs as tab, index}
-		<button class:active={activeIndex === index} on:click={() => handleTabClick(index)}>
+		<button class:active={$activeTabIndex === index} on:click={() => handleTabClick(index)}>
 			{tab}
-			<div class="underline" class:active={activeIndex === index}></div>
+			<div class="underline" class:active={$activeTabIndex === index}></div>
 		</button>
 	{/each}
 </nav>
