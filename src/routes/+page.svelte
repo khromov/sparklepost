@@ -33,15 +33,6 @@
 </script>
 
 <div class="content">
-	<nav>
-		{#each tabs as tab, index}
-			<button class:active={activeIndex === index} on:click={() => handleTabClick(index)}>
-				{tab}
-				<div class="underline" class:active={activeIndex === index}></div>
-			</button>
-		{/each}
-	</nav>
-
 	<div class="swiper" bind:this={swiperEl}>
 		<div class="swiper-wrapper">
 			{#each tabs as tab}
@@ -56,48 +47,10 @@
 </div>
 
 <style>
-	nav {
-		display: flex;
-		border-bottom: 1px solid #2f3336;
-	}
-
-	nav button {
-		flex: 1;
-		background: none;
-		border: none;
-		color: #71767b;
-		font-weight: bold;
-		padding: 15px 0;
-		cursor: pointer;
-		position: relative;
-		overflow: hidden;
-	}
-
-	nav button.active {
-		color: white;
-	}
-
-	.underline {
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		width: 100%;
-		height: 4px;
-		background-color: #1d9bf0;
-		transform: scaleX(0);
-		transition:
-			transform 0.3s ease,
-			opacity 0.3s ease;
-		opacity: 0;
-	}
-
-	.underline.active {
-		transform: scaleX(1);
-		opacity: 1;
-	}
-
+	/*
 	:global(.swiper-slide) {
 		height: auto;
 		overflow-y: auto;
 	}
+    */
 </style>

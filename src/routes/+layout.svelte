@@ -1,5 +1,6 @@
 <script lang="ts">
 	import '$lib/reset.css';
+	import Nav from '$lib/Nav.svelte';
 </script>
 
 <main>
@@ -12,6 +13,8 @@
 			<div class="settings-icon" />
 		</a>
 	</header>
+
+	<Nav />
 
 	<div class="content">
 		<slot />
