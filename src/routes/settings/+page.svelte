@@ -1,106 +1,100 @@
-<script>
-    import { createEventDispatcher } from 'svelte';
-    
-    const dispatch = createEventDispatcher();
+<script lang="ts">
+  let displayName = "Stanislav";
+  let bio = "Just another Svelte user";
+  let darkMode = true;
+  let emailNotifications = true;
+  let pushNotifications = false;
+
+  function saveSettings() {
+      // Implement save functionality here
+      alert("Settings saved!");
+  }
+</script>
+
+<div class="settings-container">
+  <h1>Settings</h1>
   
-    function closeSettings() {
-      dispatch('close');
-    }
-  </script>
-  
-  <div class="settings-screen">
-    <header>
-      <button class="back-button" on:click={closeSettings}>←</button>
-      <h1>Settings</h1>
-    </header>
-    
-    <main>
-      <section>
-        <h2>Account</h2>
-        <ul>
-          <li>Profile</li>
-          <li>Password</li>
-          <li>Privacy</li>
-        </ul>
-      </section>
-      
-      <section>
-        <h2>Display</h2>
-        <ul>
-          <li>Theme</li>
-          <li>Font Size</li>
-        </ul>
-      </section>
-      
-      <section>
-        <h2>Notifications</h2>
-        <ul>
-          <li>Push Notifications</li>
-          <li>Email Notifications</li>
-        </ul>
-      </section>
-    </main>
+  <div class="setting-group">
+      <label for="displayName">Display Name</label>
+      <input type="text" id="displayName" bind:value={displayName}>
   </div>
-  
-  <style>
-    .settings-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: black;
-      color: white;
-      z-index: 1000;
-    }
-  
-    header {
-      display: flex;
-      align-items: center;
-      padding: 10px 15px;
-      border-bottom: 1px solid #2f3336;
-    }
-  
-    .back-button {
-      background: none;
-      border: none;
-      color: #1d9bf0;
-      font-size: 20px;
-      cursor: pointer;
-      padding: 5px 10px;
-      margin-right: 20px;
-    }
-  
-    h1 {
-      font-size: 20px;
-      font-weight: bold;
-    }
-  
-    main {
+
+  <div class="setting-group">
+      <label for="bio">Bio</label>
+      <textarea id="bio" bind:value={bio}></textarea>
+  </div>
+
+  <div class="setting-group">
+      <label>
+          <input type="checkbox" bind:checked={darkMode}>
+          Dark Mode
+      </label>
+  </div>
+
+  <div class="setting-group">
+      <h2>Notifications</h2>
+      <label>
+          <input type="checkbox" bind:checked={emailNotifications}>
+          Email Notifications
+      </label>
+      <label>
+          <input type="checkbox" bind:checked={pushNotifications}>
+          Push Notifications
+      </label>
+  </div>
+
+  <button on:click={saveSettings}>Save Settings</button>
+</div>
+
+<style>
+  .settings-container {
       padding: 20px;
-    }
-  
-    section {
-      margin-bottom: 30px;
-    }
-  
-    h2 {
-      font-size: 18px;
+      color: #fff;
+  }
+
+  h1, h2 {
+      margin-bottom: 20px;
+  }
+
+  .setting-group {
+      margin-bottom: 20px;
+  }
+
+  label {
+      display: block;
+      margin-bottom: 5px;
+  }
+
+  input[type="text"],
+  textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #2f3336;
+      background-color: #000;
+      color: #fff;
+      border-radius: 4px;
+  }
+
+  textarea {
+      height: 100px;
+      resize: vertical;
+  }
+
+  input[type="checkbox"] {
+      margin-right: 8px;
+  }
+
+  button {
+      background-color: #1d9bf0;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      cursor: pointer;
       font-weight: bold;
-      margin-bottom: 10px;
-    }
-  
-    ul {
-      list-style-type: none;
-      padding: 0;
-    }
-  
-    li {
-      padding: 10px 0;
-      border-bottom: 1px solid #2f3336;
-    }
-  
-    li:last-child {
-      border-bottom: none;
-    }
-  </style>
+  }
+
+  button:hover {
+      background-color: #1a8cd8;
+  }
+</style>
