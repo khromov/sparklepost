@@ -6,7 +6,6 @@
 	import Swiper from 'swiper/bundle';
 	import 'swiper/css/bundle';
 
-	const tabs = ['For you', 'Following', 'Svelte Society'];
 	let swiper: Swiper | null;
 	let swiperEl: HTMLElement;
 
@@ -36,7 +35,7 @@
 
 <div class="swiper" bind:this={swiperEl}>
 	<div class="swiper-wrapper">
-		{#each tabs as tab}
+		{#each Array(3) as _, i}
 			<div class="swiper-slide">
 				<ScrollableView>
 					{#each Array(10) as _, i}

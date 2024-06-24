@@ -1,6 +1,13 @@
 <script lang="ts">
 	import '$lib/reset.css';
 	import Nav from '$lib/Nav.svelte';
+	import { page } from '$app/stores';
+	import { onNavigate } from '$app/navigation';
+	import { activeTabIndex } from '$lib/stores/tab';
+
+    onNavigate(() => {
+        $activeTabIndex = 0;
+    });
 </script>
 
 <main>
@@ -14,7 +21,9 @@
 		</a>
 	</header>
 
-	<Nav />
+	{#if $page.url.pathname === '/'}
+		<Nav />
+	{/if}
 
 	<div class="content">
 		<slot />
@@ -26,6 +35,7 @@
 		<button class="notifications-icon"></button>
 		<button class="messages-icon"></button>
 	</footer>
+    
 </main>
 
 <style>
