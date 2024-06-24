@@ -1,12 +1,8 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-
 	import { tabs, activeTabIndex } from './stores/tab';
 
-	const dispatch = createEventDispatcher();
-
 	function handleTabClick(index: number) {
-		dispatch('tabchange', index);
+		$activeTabIndex = index;
 	}
 </script>
 
@@ -21,14 +17,11 @@
 
 <style>
 	nav {
-		position: sticky;
-		top: 51px; /* Adjust this value to match the height of your header */
 		z-index: 5;
 		background-color: black;
 		display: flex;
 		border-bottom: 1px solid #2f3336;
 	}
-
 	nav button {
 		flex: 1;
 		background: none;

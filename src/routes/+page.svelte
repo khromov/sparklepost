@@ -26,6 +26,8 @@
 		});
 	});
 
+    $: swiper?.slideTo($activeTabIndex);
+
 	function handleTabChange(event: CustomEvent<number>) {
 		if (swiper) {
 			swiper.slideTo(event.detail);
@@ -46,8 +48,10 @@
 </div>
 
 <style>
+    /*
 	:global(.swiper-slide) {
 		height: auto;
 		overflow-y: auto;
 	}
+    */
 </style>
