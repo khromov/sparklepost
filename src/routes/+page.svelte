@@ -1,34 +1,41 @@
 <script lang="ts">
 	import Message from '$lib/Message.svelte';
 	import { onMount } from 'svelte';
-
-	let activeTab = 'For you';
-	const tabs = ['For you', 'Following', 'Svelte Society'];
-
 	import Swiper from 'swiper/bundle';
 	import 'swiper/css/bundle';
 
+	const tabs = ['For you', 'Following', 'Svelte Society'];
+	let activeIndex = 0;
 	let swiper: Swiper | null;
 	let swiperEl: HTMLElement;
-
-	const tabSlides = ['For you', 'Following', 'Svelte Society'];
 
 	onMount(() => {
 		swiper = new Swiper(swiperEl, {
 			direction: 'horizontal',
-            slidesPerView: 1,
+			slidesPerView: 1,
 			speed: 400,
 			grabCursor: true,
 			shortSwipes: true,
-			longSwipesRatio: 0.1
+			longSwipesRatio: 0.1,
+			on: {
+				slideChange: function (e) {
+					activeIndex = e.activeIndex;
+				}
+			}
 		});
 	});
+
+	function handleTabClick(index: number) {
+		if (swiper) {
+			swiper.slideTo(index);
+		}
+	}
 </script>
 
 <div class="content">
 	<nav>
-		{#each tabs as tab}
-			<button class:active={activeTab === tab}>
+		{#each tabs as tab, index}
+			<button class:active={activeIndex === index} on:click={() => handleTabClick(index)}>
 				{tab}
 			</button>
 		{/each}
@@ -36,22 +43,14 @@
 
 	<div class="swiper" bind:this={swiperEl}>
 		<div class="swiper-wrapper">
-            <div class="swiper-slide">
-                {#each Array(10) as _, i}
-                    <Message />
-                {/each}
-            </div>
-            <div class="swiper-slide">
-                {#each Array(10) as _, i}
-                    <Message />
-                {/each}
-            </div>
-            <div class="swiper-slide">
-                {#each Array(10) as _, i}
-                    <Message />
-                {/each}
-            </div>
-        </div>
+			{#each tabs as tab}
+				<div class="swiper-slide">
+					{#each Array(10) as _, i}
+						<Message />
+					{/each}
+				</div>
+			{/each}
+		</div>
 	</div>
 </div>
 
@@ -74,5 +73,10 @@
 	nav button.active {
 		color: white;
 		border-bottom: 4px solid #1d9bf0;
+	}
+
+	:global(.swiper-slide) {
+		height: auto;
+		overflow-y: auto;
 	}
 </style>
