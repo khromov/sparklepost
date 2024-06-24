@@ -37,6 +37,7 @@
 		{#each tabs as tab, index}
 			<button class:active={activeIndex === index} on:click={() => handleTabClick(index)}>
 				{tab}
+				<div class="underline" class:active={activeIndex === index}></div>
 			</button>
 		{/each}
 	</nav>
@@ -68,11 +69,31 @@
 		font-weight: bold;
 		padding: 15px 0;
 		cursor: pointer;
+		position: relative;
+		overflow: hidden;
 	}
 
 	nav button.active {
 		color: white;
-		border-bottom: 4px solid #1d9bf0;
+	}
+
+	.underline {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 4px;
+		background-color: #1d9bf0;
+		transform: scaleX(0);
+		transition:
+			transform 0.3s ease,
+			opacity 0.3s ease;
+		opacity: 0;
+	}
+
+	.underline.active {
+		transform: scaleX(1);
+		opacity: 1;
 	}
 
 	:global(.swiper-slide) {
