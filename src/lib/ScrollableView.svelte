@@ -20,7 +20,7 @@
 
 <style>
     .scrollable-content {
-        height: 100%;
+        height: calc(100vh - 56px - 54px); /* subtract top bars */
         overflow-y: auto;
     }
 </style>

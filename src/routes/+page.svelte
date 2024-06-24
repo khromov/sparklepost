@@ -33,25 +33,24 @@
 	$: swiper && mounted && swiper?.slideTo($activeTabIndex);
 </script>
 
-<div class="swiper" bind:this={swiperEl}>
-	<div class="swiper-wrapper">
-		{#each Array(3) as _, i}
-			<div class="swiper-slide">
-				<ScrollableView>
-					{#each Array(10) as _, i}
-						<Message />
-					{/each}
-				</ScrollableView>
-			</div>
-		{/each}
-	</div>
+<div class="page-wrapper">
+    <div class="swiper" bind:this={swiperEl}>
+        <div class="swiper-wrapper">
+            {#each Array(3) as _, i}
+                <div class="swiper-slide">
+                    <ScrollableView>
+                        {#each Array(10) as _, i}
+                            <Message />
+                        {/each}
+                    </ScrollableView>
+                </div>
+            {/each}
+        </div>
+    </div>
 </div>
 
 <style>
-	/*
-	:global(.swiper-slide) {
-		height: auto;
-		overflow-y: auto;
-	}
-    */
+    .page-wrapper {
+        overflow-y: hidden;
+    }
 </style>

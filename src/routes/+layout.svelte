@@ -61,7 +61,8 @@
 
 	.content {
 		flex-grow: 1;
-		overflow-y: auto;
+        overflow-y: hidden;
+		/* overflow-y: auto; */
 	}
 
 	.profile-icon,
