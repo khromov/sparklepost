@@ -183,16 +183,18 @@
 		}
 	}
 
-	@keyframes slide-to-left {
+	@keyframes zoom-out-and-darken {
 		to {
-			transform: translateX(-100%);
+			transform: scale(0.9);
+			filter: brightness(0.7);
 		}
 	}
 
 	/* Left to Right */
-	@keyframes slide-from-left {
+	@keyframes zoom-in-and-brighten {
 		from {
-			transform: translateX(-100%);
+			transform: scale(0.9);
+			filter: brightness(0.7);
 		}
 	}
 
@@ -203,7 +205,7 @@
 	}
 
 	:root::view-transition-old(root) {
-		animation: 300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-to-left;
+		animation: 300ms cubic-bezier(0.4, 0, 0.2, 1) both zoom-out-and-darken;
 	}
 
 	:root::view-transition-new(root) {
@@ -216,6 +218,6 @@
 	}
 
 	.back-transition:root::view-transition-new(root) {
-		animation: 300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-left;
+		animation: 300ms cubic-bezier(0.4, 0, 0.2, 1) both zoom-in-and-brighten;
 	}
 </style>
