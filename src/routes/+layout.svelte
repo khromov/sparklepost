@@ -220,4 +220,22 @@
 	.back-transition:root::view-transition-new(root) {
 		animation: 300ms cubic-bezier(0.4, 0, 0.2, 1) both zoom-in-and-brighten;
 	}
+
+	/* Forward transition */
+	:root::view-transition-old(root) {
+		z-index: 1;
+	}
+
+	:root::view-transition-new(root) {
+		z-index: 2;
+	}
+
+	/* Backward transition */
+	.back-transition:root::view-transition-old(root) {
+		z-index: 2;
+	}
+
+	.back-transition:root::view-transition-new(root) {
+		z-index: 1;
+	}
 </style>
