@@ -24,7 +24,6 @@
 				document.documentElement.classList.remove('back-transition');
 			});
 		});
-		
 	});
 
 	afterNavigate(() => {
@@ -203,7 +202,6 @@
 		}
 	}
 
-
 	:root::view-transition-old(root) {
 		animation:
 			190ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
@@ -211,9 +209,7 @@
 	}
 
 	:root::view-transition-new(root) {
-		animation:
-
-			300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
+		animation: 300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
 	}
 
 	/* New view transition rules for left-to-right */
