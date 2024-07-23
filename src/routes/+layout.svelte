@@ -2,7 +2,7 @@
 	import '$lib/reset.css';
 	import Nav from '$lib/Nav.svelte';
 	import { page } from '$app/stores';
-	import { onNavigate } from '$app/navigation';
+	import { afterNavigate, onNavigate } from '$app/navigation';
 	import { activeTabIndex } from '$lib/stores/tab';
 
 	onNavigate((navigation) => {
@@ -10,12 +10,25 @@
 
 		if (!document.startViewTransition) return;
 
+		if (navigation.to?.route.id === '/') {
+			document.documentElement.classList.add('back-transition');
+		}
+
 		return new Promise((resolve) => {
-			document.startViewTransition(async () => {
+			const transition = document.startViewTransition(async () => {
 				resolve();
 				await navigation.complete;
 			});
+
+			transition.finished.finally(() => {
+				document.documentElement.classList.remove('back-transition');
+			});
 		});
+		
+	});
+
+	afterNavigate(() => {
+		//document.documentElement.classList.remove('back-transition');
 	});
 </script>
 
@@ -164,6 +177,7 @@
 		}
 	}
 
+	/* Right to Left */
 	@keyframes slide-from-right {
 		from {
 			transform: translateX(30px);
@@ -176,15 +190,42 @@
 		}
 	}
 
+	/* Left to Right */
+	@keyframes slide-from-left {
+		from {
+			transform: translateX(-30px);
+		}
+	}
+
+	@keyframes slide-to-right {
+		to {
+			transform: translateX(30px);
+		}
+	}
+
+
 	:root::view-transition-old(root) {
 		animation:
-			90ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
+			190ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
 			300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-to-left;
 	}
 
 	:root::view-transition-new(root) {
 		animation:
-			210ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
+
 			300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
+	}
+
+	/* New view transition rules for left-to-right */
+	.back-transition:root::view-transition-old(root) {
+		animation:
+			190ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
+			1300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-to-right;
+	}
+
+	.back-transition:root::view-transition-new(root) {
+		animation:
+			210ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
+			300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-left;
 	}
 </style>
