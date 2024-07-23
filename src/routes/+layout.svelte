@@ -5,9 +5,18 @@
 	import { onNavigate } from '$app/navigation';
 	import { activeTabIndex } from '$lib/stores/tab';
 
-    onNavigate(() => {
-        $activeTabIndex = 0;
-    });
+	onNavigate((navigation) => {
+		$activeTabIndex = 0;
+
+		if (!document.startViewTransition) return;
+
+		return new Promise((resolve) => {
+			document.startViewTransition(async () => {
+				resolve();
+				await navigation.complete;
+			});
+		});
+	});
 </script>
 
 <main>
@@ -35,11 +44,14 @@
 		<button class="notifications-icon"></button>
 		<button class="messages-icon"></button>
 	</footer>
-    
 </main>
 
 <style>
 	/* Shared CSS */
+	:global(body) {
+		background-color: #1b1d1f;
+	}
+
 	main {
 		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 		max-width: 600px;
@@ -52,6 +64,9 @@
 	}
 
 	header {
+		view-transition-name: header;
+		background-color: black;
+
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -61,7 +76,7 @@
 
 	.content {
 		flex-grow: 1;
-        overflow-y: hidden;
+		overflow-y: hidden;
 		/* overflow-y: auto; */
 	}
 
@@ -134,5 +149,42 @@
 		mask-size: contain;
 		mask-repeat: no-repeat;
 		mask-position: center;
+	}
+
+	/* View transitions */
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+		}
+	}
+
+	@keyframes fade-out {
+		to {
+			opacity: 0;
+		}
+	}
+
+	@keyframes slide-from-right {
+		from {
+			transform: translateX(30px);
+		}
+	}
+
+	@keyframes slide-to-left {
+		to {
+			transform: translateX(-30px);
+		}
+	}
+
+	:root::view-transition-old(root) {
+		animation:
+			90ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
+			300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-to-left;
+	}
+
+	:root::view-transition-new(root) {
+		animation:
+			210ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
+			300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
 	}
 </style>
