@@ -61,7 +61,7 @@
 <style>
 	/* Shared CSS */
 	:global(body) {
-		background-color: #1b1d1f;
+		background-color: black;
 	}
 
 	main {
@@ -186,7 +186,7 @@
 	@keyframes zoom-out-and-darken {
 		to {
 			transform: scale(0.9);
-			filter: brightness(0.7);
+			filter: brightness(0);
 		}
 	}
 
@@ -194,7 +194,7 @@
 	@keyframes zoom-in-and-brighten {
 		from {
 			transform: scale(0.9);
-			filter: brightness(0.7);
+			filter: brightness(0);
 		}
 	}
 
@@ -206,36 +206,22 @@
 
 	:root::view-transition-old(root) {
 		animation: 300ms cubic-bezier(0.4, 0, 0.2, 1) both zoom-out-and-darken;
+		z-index: 1;
 	}
 
 	:root::view-transition-new(root) {
 		animation: 300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
+		z-index: 2;
 	}
 
 	/* New view transition rules for left-to-right */
 	.back-transition:root::view-transition-old(root) {
 		animation: 300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-to-right;
+		z-index: 2;
 	}
 
 	.back-transition:root::view-transition-new(root) {
 		animation: 300ms cubic-bezier(0.4, 0, 0.2, 1) both zoom-in-and-brighten;
-	}
-
-	/* Forward transition */
-	:root::view-transition-old(root) {
-		z-index: 1;
-	}
-
-	:root::view-transition-new(root) {
-		z-index: 2;
-	}
-
-	/* Backward transition */
-	.back-transition:root::view-transition-old(root) {
-		z-index: 2;
-	}
-
-	.back-transition:root::view-transition-new(root) {
 		z-index: 1;
 	}
 </style>
