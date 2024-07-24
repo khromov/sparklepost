@@ -2,9 +2,17 @@
 	import '$lib/reset.css';
 	import Nav from '$lib/Nav.svelte';
 	import { page } from '$app/stores';
-	import { afterNavigate, onNavigate } from '$app/navigation';
+	import { afterNavigate, beforeNavigate, onNavigate } from '$app/navigation';
 	import { activeTabIndex } from '$lib/stores/tab';
 	import { componentsStore } from '$lib/stores/stackedMessages';
+
+	beforeNavigate(({ willUnload, cancel}) => {
+		if($componentsStore.length > 0 && !willUnload) {
+			// Remove an element from the stack
+			$componentsStore = $componentsStore.slice(0, -1);
+			cancel();
+		}
+	});
 
 	onNavigate((navigation) => {
 		$activeTabIndex = 0;
@@ -36,7 +44,7 @@
 	});
 
 
-	$: console.trace('Current path: ', $page.url.pathname);
+	$: console.log('Current path: ', $page.url.pathname); // .trace
 </script>
 
 <main>
