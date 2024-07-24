@@ -1,12 +1,12 @@
 <script lang="ts">
     import { createAvatar } from '@dicebear/core';
     import { bottts } from '@dicebear/collection';
-	import type { Writable } from 'svelte/store';
+    import type { Writable } from 'svelte/store';
     import MessageWithComments from '$lib/MessageWithComments.svelte';
 
     export let componentsStore: Writable<Array<any>>;
 
-        function generateRandomComments() {
+    function generateRandomComments() {
         const commenters = ['Alex', 'Sam', 'Taylor', 'Jordan', 'Casey'];
         const contents = [
             'Interesting point!',
