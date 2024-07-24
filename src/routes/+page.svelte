@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Message from '$lib/Message.svelte';
 	import ScrollableView from '$lib/ScrollableView.svelte';
+	import StackedMessages from '$lib/StackedMessages.svelte';
 	import { activeTabIndex } from '$lib/stores/tab';
 	import { onMount } from 'svelte';
 	import Swiper from 'swiper/bundle';
@@ -34,6 +35,7 @@
 </script>
 
 <div class="page-wrapper">
+	<StackedMessages />
     <div class="swiper" bind:this={swiperEl}>
         <div class="swiper-wrapper">
             {#each Array(3) as _, i}
