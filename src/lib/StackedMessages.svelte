@@ -2,6 +2,7 @@
     import { fly } from 'svelte/transition';
 
     export let components: Array<{ component: any, props: any }> = [];
+    export let componentsStore; 
 </script>
 
 <div class="stacked-container">
@@ -12,7 +13,7 @@
             in:fly="{{ x: 300, duration: 300, delay: 0 }}"
             out:fly="{{ x: 300, duration: 300 }}"
         >
-            <svelte:component this={layer.component} {...layer.props} />
+            <svelte:component this={layer.component} {...layer.props} {componentsStore} />
             <p class="layer-info">Layer {index + 1} of {components.length}</p>
         </div>
     {/each}

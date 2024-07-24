@@ -44,7 +44,7 @@
     }
 </script>
 
-<StackedMessages components={$componentsStore} />
+<StackedMessages components={$componentsStore} {componentsStore} />
 
 <div class="controls">
     <button on:click={addLayer}>Add Tweet</button>

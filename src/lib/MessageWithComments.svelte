@@ -1,7 +1,11 @@
 <script lang="ts">
     import { createAvatar } from '@dicebear/core';
     import { bottts } from '@dicebear/collection';
+	import type { Writable } from 'svelte/store';
+    import MessageWithComments from '$lib/MessageWithComments.svelte';
 
+    export let componentsStore: Writable<Array<any>>;
+    
     export let tweet = {
         name: 'Stanislav',
         handle: '@khromov',
@@ -22,6 +26,25 @@
         });
         return avatar.toDataUri();
     }
+
+    function handleCommentClick(comment) {
+        componentsStore.update(components => [
+            ...components,
+            {
+                component: MessageWithComments,
+                props: {
+                    tweet: {
+                        name: comment.name,
+                        handle: comment.handle,
+                        time: comment.time,
+                        content: comment.content,
+                        avatarSeed: comment.avatarSeed
+                    },
+                    comments: [] // Start with no comments
+                }
+            }
+        ]);
+    }
 </script>
 
 <div class="tweet-container">
@@ -39,7 +62,8 @@
 
     <div class="comments">
         {#each comments as comment}
-            <div class="tweet comment">
+            <!-- svelte-ignore a11y-no-static-element-interactions a11y-click-events-have-key-events -->
+            <div class="tweet comment" on:click={() => handleCommentClick(comment)}>
                 <img class="avatar" src={createAvatarUri(comment.avatarSeed)} alt="Avatar" />
                 <div class="tweet-content">
                     <div class="tweet-header">
