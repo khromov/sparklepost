@@ -31,7 +31,7 @@
         const newComponents = [
             ...currentComponents,
             {
-                component: MessageWithComments,
+                componentName: "MessageWithComments",
                 props: {
                     tweet: {
                         name: comment.name,

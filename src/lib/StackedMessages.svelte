@@ -1,8 +1,14 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
 	import { pushState } from '$app/navigation';
+	import MessageWithComments from './MessageWithComments.svelte';
 
-	export let components: Array<{ component: any; props: any }> = [];
+	export let components: Array<{ componentName: string; props: any }> = [];
+
+	const componentMappings = {
+		"MessageWithComments": MessageWithComments,
+		// Add other components here as needed
+	};
 
 	function handleClose() {
 		if (components.length > 0) {
@@ -21,18 +27,13 @@
 			out:fly={{ x: 300, duration: 300 }}
 		>
 			<button class="close-button" on:click={handleClose}>Close</button>
-			<svelte:component this={layer.component} {...layer.props} />
+			<svelte:component this={componentMappings[layer.componentName]} {...layer.props} />
 		</div>
 	{/each}
 </div>
 
 <style>
 	.stacked-container {
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
 		background-color: rgba(0, 0, 0, 0.7);
 		z-index: 1000;
 		overflow: hidden;

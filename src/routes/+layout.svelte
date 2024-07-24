@@ -4,15 +4,6 @@
 	import { page } from '$app/stores';
 	import { onNavigate } from '$app/navigation';
 	import { activeTabIndex } from '$lib/stores/tab';
-	import StackedMessages from '$lib/StackedMessages.svelte';
-
-	let stackedComponents: Array<{ component: any; props: any }> = [];
-
-	$: {
-		if ($page.state.stackedComponents) {
-			stackedComponents = $page.state.stackedComponents;
-		}
-	}
 
 	onNavigate((navigation) => {
 		$activeTabIndex = 0;
@@ -66,8 +57,6 @@
 		<button class="messages-icon" />
 	</footer>
 </main>
-
-<StackedMessages components={stackedComponents} />
 
 <style>
 	/* Shared CSS */

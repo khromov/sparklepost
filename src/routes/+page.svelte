@@ -5,15 +5,23 @@
 	import { onMount } from 'svelte';
 	import Swiper from 'swiper/bundle';
 	import 'swiper/css/bundle';
-	import MessageWithComments from '$lib/MessageWithComments.svelte';
 	import { generateRandomComments } from '$lib/random';
 	import { pushState } from '$app/navigation';
 	import { page } from '$app/stores';
+	import StackedMessages from '$lib/StackedMessages.svelte';
 
 	let swiper: Swiper | null;
 	let swiperEl: HTMLElement;
 
 	let mounted = false;
+
+	let stackedComponents: Array<{ componentName: any; props: any }> = [];
+
+	$: {
+		if ($page.state.stackedComponents) {
+			stackedComponents = $page.state.stackedComponents;
+		}
+	}
 
 	onMount(() => {
 		swiper = new Swiper(swiperEl, {
@@ -41,7 +49,7 @@
 		const newComponents = [
 			...currentComponents,
 			{
-				component: MessageWithComments,
+				componentName: 'MessageWithComments',
 				props: {
 					tweet: {
 						name: message.name,
@@ -81,6 +89,8 @@
 						{/each}
 					</ScrollableView>
 				</div>
+
+				<StackedMessages components={stackedComponents} />
 			{/each}
 		</div>
 	</div>
