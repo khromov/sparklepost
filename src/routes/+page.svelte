@@ -27,7 +27,7 @@
 			}
 		});
 
-        // To avoid rerenders
+		// To avoid rerenders
 		mounted = true;
 	});
 
@@ -36,23 +36,23 @@
 
 <div class="page-wrapper">
 	<StackedMessages />
-    <div class="swiper" bind:this={swiperEl}>
-        <div class="swiper-wrapper">
-            {#each Array(3) as _, i}
-                <div class="swiper-slide">
-                    <ScrollableView>
-                        {#each Array(10) as _, x}
-                            <Message tab={i} number={x}  />
-                        {/each}
-                    </ScrollableView>
-                </div>
-            {/each}
-        </div>
-    </div>
+	<div class="swiper" bind:this={swiperEl}>
+		<div class="swiper-wrapper">
+			{#each Array(3) as _, i}
+				<div class="swiper-slide">
+					<ScrollableView>
+						{#each Array(10) as _, x}
+							<Message tab={i} number={x} />
+						{/each}
+					</ScrollableView>
+				</div>
+			{/each}
+		</div>
+	</div>
 </div>
 
 <style>
-    .page-wrapper {
-        overflow-y: hidden;
-    }
+	.page-wrapper {
+		overflow-y: hidden;
+	}
 </style>
