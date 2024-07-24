@@ -7,14 +7,12 @@
 	import 'swiper/css/bundle';
 	import StackedMessages from '$lib/StackedMessages.svelte';
 	import MessageWithComments from '$lib/MessageWithComments.svelte';
-	import { writable, type Writable } from 'svelte/store';
+	import { componentsStore } from '$lib/stores/stackedMessages';
 
 	let swiper: Swiper | null;
 	let swiperEl: HTMLElement;
 
 	let mounted = false;
-
-	const componentsStore: Writable<Array<any>> = writable([]);
 
 	onMount(() => {
 		swiper = new Swiper(swiperEl, {

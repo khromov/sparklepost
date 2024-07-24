@@ -1,3 +1,8 @@
 import { writable } from 'svelte/store';
+import type { Writable } from 'svelte/store';
 
-export const stackedMessages = writable([]);
+export const componentsStore: Writable<Array<any>> = writable([]);
+
+componentsStore.subscribe((components) => {
+    console.log('componentsStore:', components);
+});

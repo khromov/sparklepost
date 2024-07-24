@@ -4,10 +4,11 @@
 	import { page } from '$app/stores';
 	import { afterNavigate, onNavigate } from '$app/navigation';
 	import { activeTabIndex } from '$lib/stores/tab';
-
+	import { componentsStore } from '$lib/stores/stackedMessages';
 
 	onNavigate((navigation) => {
 		$activeTabIndex = 0;
+		$componentsStore = [];
 
 		if (!document.startViewTransition) return;
 
