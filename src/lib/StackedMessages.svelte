@@ -23,8 +23,6 @@
 
 <style>
     .stacked-container {
-        position: fixed;
-        top: 110px; /* Adjust this value to position below the top menu and tab bar */
         left: 0;
         right: 0;
         bottom: 0;

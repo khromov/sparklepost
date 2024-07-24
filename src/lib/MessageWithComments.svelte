@@ -16,7 +16,7 @@
             'I love this discussion!'
         ];
         
-        return Array.from({ length: Math.floor(Math.random() * 3) + 5 }, (_, index) => ({
+        return Array.from({ length: Math.floor(Math.random() * 3) + 10 }, (_, index) => ({
             name: commenters[Math.floor(Math.random() * commenters.length)],
             handle: `@user${Math.floor(Math.random() * 1000)}`,
             time: `${Math.floor(Math.random() * 59) + 1}m`,
