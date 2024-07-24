@@ -16,7 +16,7 @@
             'I love this discussion!'
         ];
         
-        return Array.from({ length: Math.floor(Math.random() * 3) + 1 }, (_, index) => ({
+        return Array.from({ length: Math.floor(Math.random() * 3) + 5 }, (_, index) => ({
             name: commenters[Math.floor(Math.random() * commenters.length)],
             handle: `@user${Math.floor(Math.random() * 1000)}`,
             time: `${Math.floor(Math.random() * 59) + 1}m`,
@@ -100,7 +100,6 @@
 <style>
     .tweet-container {
         border: 1px solid #2f3336;
-        border-radius: 10px;
         overflow: hidden;
     }
 

@@ -14,8 +14,7 @@
             out:fly="{{ x: 300, duration: 300 }}"
         >
             <svelte:component this={layer.component} {...layer.props} {componentsStore} />
-            <p class="layer-info">Layer {index + 1} of {components.length}</p>
-        </div>
+         </div>
     {/each}
 </div>
 
