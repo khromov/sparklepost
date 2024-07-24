@@ -5,6 +5,25 @@
     import MessageWithComments from '$lib/MessageWithComments.svelte';
 
     export let componentsStore: Writable<Array<any>>;
+
+        function generateRandomComments() {
+        const commenters = ['Alex', 'Sam', 'Taylor', 'Jordan', 'Casey'];
+        const contents = [
+            'Interesting point!',
+            'I disagree, actually.',
+            'Can you elaborate on that?',
+            'This thread is getting deep!',
+            'I love this discussion!'
+        ];
+        
+        return Array.from({ length: Math.floor(Math.random() * 3) + 1 }, (_, index) => ({
+            name: commenters[Math.floor(Math.random() * commenters.length)],
+            handle: `@user${Math.floor(Math.random() * 1000)}`,
+            time: `${Math.floor(Math.random() * 59) + 1}m`,
+            content: contents[Math.floor(Math.random() * contents.length)],
+            avatarSeed: `comment-${index}-${Date.now()}`
+        }));
+    }
     
     export let tweet = {
         name: 'Stanislav',
@@ -40,7 +59,7 @@
                         content: comment.content,
                         avatarSeed: comment.avatarSeed
                     },
-                    comments: [] // Start with no comments
+                    comments: generateRandomComments()
                 }
             }
         ]);
