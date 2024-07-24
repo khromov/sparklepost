@@ -1,5 +1,6 @@
 <script lang="ts">
     import { writable } from 'svelte/store';
+    import { fly } from 'svelte/transition';
 
     export let initialContent: string = '';
 
@@ -21,8 +22,13 @@
 </script>
 
 <div class="stacked-container">
-    {#each $messageStack as layer, index}
-        <div class="message-layer" style="z-index: {layer.zIndex}">
+    {#each $messageStack as layer, index (layer.zIndex)}
+        <div 
+            class="message-layer" 
+            style="z-index: {layer.zIndex}"
+            in:fly="{{ x: 300, duration: 300, delay: 0 }}"
+            out:fly="{{ x: 300, duration: 300 }}"
+        >
             <p>{layer.content}</p>
             <p class="layer-info">Layer {index + 1} of {$messageStack.length}</p>
         </div>
