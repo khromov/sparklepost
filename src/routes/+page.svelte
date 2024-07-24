@@ -1,58 +1,80 @@
 <script lang="ts">
-	import Message from '$lib/Message.svelte';
-	import ScrollableView from '$lib/ScrollableView.svelte';
-	import StackedMessages from '$lib/StackedMessages.svelte';
-	import { activeTabIndex } from '$lib/stores/tab';
-	import { onMount } from 'svelte';
-	import Swiper from 'swiper/bundle';
-	import 'swiper/css/bundle';
+	import { writable } from 'svelte/store';
+	import { fly } from 'svelte/transition';
 
-	let swiper: Swiper | null;
-	let swiperEl: HTMLElement;
+	export let initialContent: string = '';
 
-	let mounted = false;
+	const messageStack = writable([{ content: initialContent, zIndex: 1 }]);
 
-	onMount(() => {
-		swiper = new Swiper(swiperEl, {
-			direction: 'horizontal',
-			slidesPerView: 1,
-			speed: 400,
-			grabCursor: true,
-			shortSwipes: true,
-			longSwipesRatio: 0.1,
-			on: {
-				slideChange: function (e) {
-					$activeTabIndex = e.activeIndex;
-				}
-			}
+	function addLayer(content: string = '') {
+		messageStack.update((stack) => {
+			const newZIndex = stack.length + 1;
+			const newContent = content || `Layer ${newZIndex} - ${Date.now()}`;
+			return [...stack, { content: newContent, zIndex: newZIndex }];
 		});
+	}
 
-		// To avoid rerenders
-		mounted = true;
-	});
+	function removeTopLayer() {
+		messageStack.update((stack) => stack.slice(0, -1));
+	}
 
-	$: swiper && mounted && swiper?.slideTo($activeTabIndex);
+	$: console.log($messageStack);
 </script>
 
-<div class="page-wrapper">
-	<StackedMessages />
-	<div class="swiper" bind:this={swiperEl}>
-		<div class="swiper-wrapper">
-			{#each Array(3) as _, i}
-				<div class="swiper-slide">
-					<ScrollableView>
-						{#each Array(10) as _, x}
-							<Message tab={i} number={x} />
-						{/each}
-					</ScrollableView>
-				</div>
-			{/each}
+<div class="stacked-container">
+	{#each $messageStack as layer, index (layer.zIndex)}
+		<div
+			class="message-layer"
+			style="z-index: {layer.zIndex}"
+			in:fly={{ x: 300, duration: 300 }}
+			out:fly={{ x: 300, duration: 300 }}
+		>
+			<p>{layer.content}</p>
+			<p class="layer-info">Layer {index + 1} of {$messageStack.length}</p>
 		</div>
-	</div>
+	{/each}
 </div>
 
+<button on:click={() => addLayer()}>Add Layer</button>
+<button on:click={removeTopLayer}>Remove Top Layer</button>
+
 <style>
-	.page-wrapper {
-		overflow-y: hidden;
+	.stacked-container {
+		position: relative;
+		width: 100%;
+		height: 300px;
+		overflow: hidden;
+	}
+
+	.message-layer {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.8);
+		color: white;
+		padding: 20px;
+		box-sizing: border-box;
+		overflow-y: auto;
+	}
+
+	.layer-info {
+		position: absolute;
+		bottom: 10px;
+		right: 10px;
+		font-size: 0.8em;
+		opacity: 0.7;
+	}
+
+	button {
+		margin-top: 10px;
+		margin-right: 10px;
+		padding: 5px 10px;
+		background-color: #1d9bf0;
+		color: white;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
 	}
 </style>
