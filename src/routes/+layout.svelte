@@ -18,7 +18,6 @@
 			return;
 		}
 
-
 		if (navigation.to?.route.id === '/') {
 			document.documentElement.classList.add('back-transition');
 		}
@@ -37,7 +36,7 @@
 	});
 
 
-	$: console.log('Current path: ', $page.url.pathname);
+	$: console.trace('Current path: ', $page.url.pathname);
 </script>
 
 <main>
