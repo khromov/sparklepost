@@ -27,7 +27,7 @@
         return avatar.toDataUri();
     }
 
-    function handleCommentClick(comment) {
+    function handleCommentClick(comment: any) {
         componentsStore.update(components => [
             ...components,
             {
