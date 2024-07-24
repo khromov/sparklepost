@@ -6,6 +6,7 @@
 	}
 </script>
 
+
 <nav>
 	{#each tabs as tab, index}
 		<button class:active={$activeTabIndex === index} on:click={() => handleTabClick(index)}>

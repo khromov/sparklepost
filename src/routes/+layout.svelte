@@ -2,12 +2,41 @@
 	import '$lib/reset.css';
 	import Nav from '$lib/Nav.svelte';
 	import { page } from '$app/stores';
-	import { onNavigate } from '$app/navigation';
+	import { afterNavigate, onNavigate } from '$app/navigation';
 	import { activeTabIndex } from '$lib/stores/tab';
 
-    onNavigate(() => {
-        $activeTabIndex = 0;
-    });
+
+	onNavigate((navigation) => {
+		$activeTabIndex = 0;
+
+		if (!document.startViewTransition) return;
+
+		// console.log('ft', navigation.from?.route.id, navigation.to?.route.id);
+
+		//if(navigation.from?.route.id === navigation.to?.route.id) {
+		//	return;
+		//}
+
+
+		//if (navigation.to?.route.id === '/') {
+		//	document.documentElement.classList.add('back-transition');
+		//}
+
+		return new Promise((resolve) => {
+			const transition = document.startViewTransition(async () => {
+				resolve();
+				await navigation.complete;
+			});
+
+			//transition.finished.finally(() => {
+			//	document.documentElement.classList.remove('back-transition');
+			//});
+		});
+
+	});
+
+
+	$: console.log('Current path: ', $page.url.pathname);
 </script>
 
 <main>
@@ -35,11 +64,14 @@
 		<button class="notifications-icon"></button>
 		<button class="messages-icon"></button>
 	</footer>
-    
 </main>
 
 <style>
 	/* Shared CSS */
+	:global(body) {
+		background-color: black;
+	}
+
 	main {
 		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 		max-width: 600px;
@@ -52,6 +84,9 @@
 	}
 
 	header {
+		view-transition-name: header;
+		background-color: black;
+
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -61,7 +96,7 @@
 
 	.content {
 		flex-grow: 1;
-        overflow-y: hidden;
+		overflow-y: hidden;
 		/* overflow-y: auto; */
 	}
 
@@ -134,5 +169,67 @@
 		mask-size: contain;
 		mask-repeat: no-repeat;
 		mask-position: center;
+	}
+
+	/* View transitions */
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+		}
+	}
+
+	@keyframes fade-out {
+		to {
+			opacity: 0;
+		}
+	}
+
+	/* Right to Left */
+	@keyframes slide-from-right {
+		from {
+			transform: translateX(100%);
+		}
+	}
+
+	@keyframes zoom-out-and-darken {
+		to {
+			transform: scale(0.9);
+			filter: brightness(0);
+		}
+	}
+
+	/* Left to Right */
+	@keyframes zoom-in-and-brighten {
+		from {
+			transform: scale(0.9);
+			filter: brightness(0);
+		}
+	}
+
+	@keyframes slide-to-right {
+		to {
+			transform: translateX(100%);
+		}
+	}
+
+	:root::view-transition-old(root) {
+		animation: 300ms cubic-bezier(0.4, 0, 0.2, 1) both zoom-out-and-darken;
+		z-index: 1;
+	}
+
+	:root::view-transition-new(root) {
+		animation: 300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
+		z-index: 2;
+	}
+
+	/* New view transition rules for left-to-right */
+	.back-transition:root::view-transition-old(root) {
+		animation: 300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-to-right;
+		z-index: 2;
+	}
+
+	.back-transition:root::view-transition-new(root) {
+		animation: 300ms cubic-bezier(0.4, 0, 0.2, 1) both zoom-in-and-brighten;
+		z-index: 1;
 	}
 </style>

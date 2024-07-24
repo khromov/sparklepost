@@ -4,6 +4,8 @@
 	let darkMode = true;
 	let emailNotifications = true;
 	let pushNotifications = false;
+	let language = 'en';
+	let privacyLevel = 'public';
 
 	function saveSettings() {
 		// Implement save functionality here
@@ -43,6 +45,25 @@
 		</label>
 	</div>
 
+	<div class="setting-group">
+		<label for="language">Language</label>
+		<select id="language" bind:value={language}>
+			<option value="en">English</option>
+			<option value="es">Español</option>
+			<option value="fr">Français</option>
+			<option value="de">Deutsch</option>
+		</select>
+	</div>
+
+	<div class="setting-group">
+		<label for="privacyLevel">Privacy Level</label>
+		<select id="privacyLevel" bind:value={privacyLevel}>
+			<option value="public">Public</option>
+			<option value="friends">Friends Only</option>
+			<option value="private">Private</option>
+		</select>
+	</div>
+
 	<button on:click={saveSettings}>Save Settings</button>
 </div>
 
@@ -50,6 +71,8 @@
 	.settings-container {
 		padding: 20px;
 		color: #fff;
+		height: 100%;
+		overflow-y: auto;
 	}
 
 	h1,
@@ -67,7 +90,8 @@
 	}
 
 	input[type='text'],
-	textarea {
+	textarea,
+	select {
 		width: 100%;
 		padding: 8px;
 		border: 1px solid #2f3336;
