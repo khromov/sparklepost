@@ -1,14 +1,41 @@
 <script lang="ts">
     import { writable, type Writable } from 'svelte/store';
     import StackedMessages from '$lib/StackedMessages.svelte';
-    import Inner from '$lib/Inner.svelte';
+    import TweetWithComments from '$lib/MessageWithComments.svelte';
 
     const componentsStore: Writable<Array<any>> = writable([]);
 
     function addLayer() {
         componentsStore.update(components => {
             const newIndex = components.length + 1;
-            return [...components, { component: Inner, props: { title: `Component ${newIndex}` } }];
+            return [...components, {
+                component: TweetWithComments,
+                props: {
+                    tweet: {
+                        name: `User ${newIndex}`,
+                        handle: `@user${newIndex}`,
+                        time: '1h',
+                        content: `This is tweet number ${newIndex} in the stack!`,
+                        avatarSeed: `main-tweet-${newIndex}`
+                    },
+                    comments: [
+                        {
+                            name: 'Commenter A',
+                            handle: '@commenterA',
+                            time: '30m',
+                            content: 'Great tweet!',
+                            avatarSeed: `comment-A-${newIndex}`
+                        },
+                        {
+                            name: 'Commenter B',
+                            handle: '@commenterB',
+                            time: '15m',
+                            content: 'I agree!',
+                            avatarSeed: `comment-B-${newIndex}`
+                        }
+                    ]
+                }
+            }];
         });
     }
 
@@ -17,13 +44,11 @@
     }
 </script>
 
-<h1>Stacked Messages Demo</h1>
-
 <StackedMessages components={$componentsStore} />
 
 <div class="controls">
-    <button on:click={addLayer}>Add Layer</button>
-    <button on:click={removeTopLayer}>Remove Top Layer</button>
+    <button on:click={addLayer}>Add Tweet</button>
+    <button on:click={removeTopLayer}>Remove Top Tweet</button>
 </div>
 
 <style>

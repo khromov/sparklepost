@@ -34,7 +34,6 @@
         height: 100%;
         background-color: rgba(0, 0, 0, 1);
         color: white;
-        padding: 20px;
         box-sizing: border-box;
         overflow-y: auto;
     }
