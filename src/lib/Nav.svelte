@@ -1,8 +1,10 @@
 <script lang="ts">
+	import { componentsStore } from '$lib/stores/stackedMessages';
 	import { tabs, activeTabIndex } from './stores/tab';
 
 	function handleTabClick(index: number) {
 		$activeTabIndex = index;
+		$componentsStore = [];
 	}
 </script>
 
