@@ -10,6 +10,12 @@
 
 		if (!document.startViewTransition) return;
 
+		console.log('ft', navigation.from?.route.id, navigation.to?.route.id);
+
+		if(navigation.from?.route.id === navigation.to?.route.id) {
+			return;
+		}
+
 		if (navigation.to?.route.id === '/') {
 			document.documentElement.classList.add('back-transition');
 		}
@@ -29,6 +35,7 @@
 	afterNavigate(() => {
 		//document.documentElement.classList.remove('back-transition');
 	});
+	$: console.log($page.url.pathname);
 </script>
 
 <main>
