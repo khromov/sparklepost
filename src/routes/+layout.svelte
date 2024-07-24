@@ -6,8 +6,13 @@
 	import { activeTabIndex } from '$lib/stores/tab';
 	import { componentsStore } from '$lib/stores/stackedMessages';
 
-	beforeNavigate(({ willUnload, cancel}) => {
-		if($componentsStore.length > 0 && !willUnload) {
+	beforeNavigate(({ willUnload, cancel, from, to, ...rest }) => {
+		console.log('xxx', from, to, rest);
+		if(
+			// (to && to.route.id === '/') &&
+			$componentsStore.length > 0 //&& 
+			//!willUnload
+		) {
 			// Remove the top element from the stack
 			$componentsStore = $componentsStore.slice(0, -1);
 			cancel();
@@ -43,8 +48,7 @@
 
 	});
 
-
-	$: console.log('Current path: ', $page.url.pathname); // .trace
+	//$: console.log('Current path: ', $page.url.pathname); // .trace
 </script>
 
 <main>
