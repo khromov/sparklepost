@@ -8,7 +8,7 @@
 
 	beforeNavigate(({ willUnload, cancel}) => {
 		if($componentsStore.length > 0 && !willUnload) {
-			// Remove an element from the stack
+			// Remove the top element from the stack
 			$componentsStore = $componentsStore.slice(0, -1);
 			cancel();
 		}

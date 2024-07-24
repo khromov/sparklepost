@@ -8,6 +8,7 @@
 	import StackedMessages from '$lib/StackedMessages.svelte';
 	import MessageWithComments from '$lib/MessageWithComments.svelte';
 	import { componentsStore } from '$lib/stores/stackedMessages';
+	import { generateRandomComments } from '$lib/random';
 
 	let swiper: Swiper | null;
 	let swiperEl: HTMLElement;
@@ -54,24 +55,7 @@
 		]);
 	}
 
-	function generateRandomComments() {
-		const commenters = ['Alex', 'Sam', 'Taylor', 'Jordan', 'Casey'];
-		const contents = [
-			'Interesting point!',
-			'I disagree, actually.',
-			'Can you elaborate on that?',
-			'This thread is getting deep!',
-			'I love this discussion!'
-		];
-
-		return Array.from({ length: Math.floor(Math.random() * 3) + 5 }, (_, index) => ({
-			name: commenters[Math.floor(Math.random() * commenters.length)],
-			handle: `@user${Math.floor(Math.random() * 1000)}`,
-			time: `${Math.floor(Math.random() * 59) + 1}m`,
-			content: contents[Math.floor(Math.random() * contents.length)],
-			avatarSeed: `comment-${index}-${Date.now()}`
-		}));
-	}
+	
 </script>
 
 <div class="page-wrapper">
@@ -81,7 +65,7 @@
 				<div class="swiper-slide">
 					<ScrollableView>
 						{#each Array(10) as _, x}
-							<!-- svelte-ignore a11y-click-events-have-key-events -->
+							<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
 							<div
 								on:click={() =>
 									handleMessageClick({
