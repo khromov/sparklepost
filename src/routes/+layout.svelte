@@ -11,16 +11,16 @@
 
 		if (!document.startViewTransition) return;
 
-		// console.log('ft', navigation.from?.route.id, navigation.to?.route.id);
+		console.log('ft', navigation.from?.route.id, navigation.to?.route.id);
 
-		//if(navigation.from?.route.id === navigation.to?.route.id) {
-		//	return;
-		//}
+		if(navigation.from?.route.id === navigation.to?.route.id) {
+			return;
+		}
 
 
-		//if (navigation.to?.route.id === '/') {
-		//	document.documentElement.classList.add('back-transition');
-		//}
+		if (navigation.to?.route.id === '/') {
+			document.documentElement.classList.add('back-transition');
+		}
 
 		return new Promise((resolve) => {
 			const transition = document.startViewTransition(async () => {
@@ -28,9 +28,9 @@
 				await navigation.complete;
 			});
 
-			//transition.finished.finally(() => {
-			//	document.documentElement.classList.remove('back-transition');
-			//});
+			transition.finished.finally(() => {
+				document.documentElement.classList.remove('back-transition');
+			});
 		});
 
 	});
