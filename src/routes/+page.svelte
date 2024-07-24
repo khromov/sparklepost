@@ -5,10 +5,10 @@
 	import { onMount } from 'svelte';
 	import Swiper from 'swiper/bundle';
 	import 'swiper/css/bundle';
-	import StackedMessages from '$lib/StackedMessages.svelte';
 	import MessageWithComments from '$lib/MessageWithComments.svelte';
-	import { componentsStore } from '$lib/stores/stackedMessages';
 	import { generateRandomComments } from '$lib/random';
+	import { pushState } from '$app/navigation';
+	import { page } from '$app/stores';
 
 	let swiper: Swiper | null;
 	let swiperEl: HTMLElement;
@@ -37,8 +37,9 @@
 	$: swiper && mounted && swiper?.slideTo($activeTabIndex);
 
 	function handleMessageClick(message: any) {
-		componentsStore.update((components) => [
-			...components,
+		const currentComponents = $page.state.stackedComponents || [];
+		const newComponents = [
+			...currentComponents,
 			{
 				component: MessageWithComments,
 				props: {
@@ -52,10 +53,9 @@
 					comments: generateRandomComments()
 				}
 			}
-		]);
+		];
+		pushState('', { stackedComponents: newComponents });
 	}
-
-	
 </script>
 
 <div class="page-wrapper">
@@ -84,7 +84,6 @@
 			{/each}
 		</div>
 	</div>
-	<StackedMessages components={$componentsStore} {componentsStore} />
 </div>
 
 <style>

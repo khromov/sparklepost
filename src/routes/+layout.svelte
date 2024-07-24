@@ -2,32 +2,24 @@
 	import '$lib/reset.css';
 	import Nav from '$lib/Nav.svelte';
 	import { page } from '$app/stores';
-	import { afterNavigate, beforeNavigate, onNavigate } from '$app/navigation';
+	import { onNavigate } from '$app/navigation';
 	import { activeTabIndex } from '$lib/stores/tab';
-	import { componentsStore } from '$lib/stores/stackedMessages';
+	import StackedMessages from '$lib/StackedMessages.svelte';
 
-	beforeNavigate(({ willUnload, cancel, from, to, ...rest }) => {
-		console.log('xxx', from, to, rest);
-		if(
-			// (to && to.route.id === '/') &&
-			$componentsStore.length > 0 //&& 
-			//!willUnload
-		) {
-			// Remove the top element from the stack
-			$componentsStore = $componentsStore.slice(0, -1);
-			cancel();
+	let stackedComponents: Array<{ component: any; props: any }> = [];
+
+	$: {
+		if ($page.state.stackedComponents) {
+			stackedComponents = $page.state.stackedComponents;
 		}
-	});
+	}
 
 	onNavigate((navigation) => {
 		$activeTabIndex = 0;
-		$componentsStore = [];
 
 		if (!document.startViewTransition) return;
 
-		console.log('ft', navigation.from?.route.id, navigation.to?.route.id);
-
-		if(navigation.from?.route.id === navigation.to?.route.id) {
+		if (navigation.from?.route.id === navigation.to?.route.id) {
 			return;
 		}
 
@@ -45,15 +37,12 @@
 				document.documentElement.classList.remove('back-transition');
 			});
 		});
-
 	});
-
-	//$: console.log('Current path: ', $page.url.pathname); // .trace
 </script>
 
 <main>
 	<header>
-		<div class="profile-icon"></div>
+		<div class="profile-icon" />
 		<div class="logo">
 			<a href="/">🙈</a>
 		</div>
@@ -71,12 +60,14 @@
 	</div>
 
 	<footer>
-		<button class="home-icon"></button>
-		<button class="search-icon"></button>
-		<button class="notifications-icon"></button>
-		<button class="messages-icon"></button>
+		<button class="home-icon" />
+		<button class="search-icon" />
+		<button class="notifications-icon" />
+		<button class="messages-icon" />
 	</footer>
 </main>
+
+<StackedMessages components={stackedComponents} />
 
 <style>
 	/* Shared CSS */
