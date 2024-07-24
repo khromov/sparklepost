@@ -8,7 +8,8 @@
     function addLayer(content: string = '') {
         messageStack.update(stack => {
             const newZIndex = stack.length + 1;
-            return [...stack, { content, zIndex: newZIndex }];
+            const newContent = content || `Layer ${newZIndex} - ${Date.now()}`;
+            return [...stack, { content: newContent, zIndex: newZIndex }];
         });
     }
 
@@ -20,9 +21,10 @@
 </script>
 
 <div class="stacked-container">
-    {#each $messageStack as layer}
+    {#each $messageStack as layer, index}
         <div class="message-layer" style="z-index: {layer.zIndex}">
             <p>{layer.content}</p>
+            <p class="layer-info">Layer {index + 1} of {$messageStack.length}</p>
         </div>
     {/each}
 </div>
@@ -49,6 +51,14 @@
         padding: 20px;
         box-sizing: border-box;
         overflow-y: auto;
+    }
+
+    .layer-info {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        font-size: 0.8em;
+        opacity: 0.7;
     }
 
     button {
