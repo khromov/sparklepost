@@ -1,13 +1,9 @@
 <script lang="ts">
-    import { writable } from 'svelte/store';
+    import { writable, type Writable } from 'svelte/store';
     import StackedMessages from '$lib/StackedMessages.svelte';
     import Inner from '$lib/Inner.svelte';
 
-    const componentsStore = writable([
-        { component: Inner, props: { title: 'First Component' } },
-        { component: Inner, props: { title: 'Second Component' } },
-        { component: Inner, props: { title: 'Third Component' } },
-    ]);
+    const componentsStore: Writable<Array<any>> = writable([]);
 
     function addLayer() {
         componentsStore.update(components => {
