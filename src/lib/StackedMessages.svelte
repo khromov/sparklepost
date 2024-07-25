@@ -37,7 +37,7 @@
 			out:fly={{ x: 300, duration: 200 }}
 		>
 			<button class="close-button" onclick={handleClose}>Close</button>
-			<svelte:component this={componentMappings[layer.componentName]} {...layer.props} />
+			<svelte:component this={componentMappings[layer.componentName as keyof typeof componentMappings]} {...layer.props} />
 		</div>
 	{/each}
 </div>
