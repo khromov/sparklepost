@@ -91,6 +91,7 @@
 		background-color: black;
 		color: white;
 		height: 100vh;
+		height: 100dvh;
 		display: flex;
 		flex-direction: column;
 	}
