@@ -32,7 +32,7 @@
 
 	const handleLogoClick = () => {
 		// Clear the stack of components
-		if($page.url.pathname === '/' && $page.state.stackedComponents.length > 0) {
+		if($page.url.pathname === '/' && $page.state.stackedComponents && $page.state.stackedComponents.length > 0) {
 			pushState('', { stackedComponents: [] });
 		} else {
 			goto('/');

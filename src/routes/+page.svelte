@@ -88,9 +88,7 @@
 							</div>
 						{/each}
 					</ScrollableView>
-				</div>
-
-				
+				</div>				
 			{/each}
 		</div>
 	</div>

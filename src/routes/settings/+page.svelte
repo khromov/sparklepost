@@ -7,13 +7,25 @@
 	let language = 'en';
 	let privacyLevel = 'public';
 
+	let settingsContainer: HTMLDivElement;
+
 	function saveSettings() {
 		// Implement save functionality here
 		alert('Settings saved!');
 	}
+
+	export const snapshot = {
+		capture: () => {
+			return { scrollY: settingsContainer?.scrollTop ?? 0 };
+		},
+		restore: (value: { scrollY: number }) => {
+			console.log('restore', value);
+			settingsContainer.scrollTop = value.scrollY;
+		}
+	};
 </script>
 
-<div class="settings-container">
+<div class="settings-container" bind:this={settingsContainer}>
 	<h1>Settings</h1>
 
 	<div class="setting-group">
