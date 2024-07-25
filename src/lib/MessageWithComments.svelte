@@ -1,11 +1,19 @@
 <script lang="ts">
-    import { createAvatar } from '@dicebear/core';
-    import { bottts } from '@dicebear/collection';
-    import { generateRandomComments } from './random';
     import { pushState } from '$app/navigation';
     import { page } from '$app/stores';
+    import { generateRandomComments } from './random';
 
-    export let tweet = {
+    interface Tweet {
+        name: string;
+        handle: string;
+        time: string;
+        content: string;
+        avatarSeed: string;
+    }
+
+    interface Comment extends Tweet {}
+
+    export let tweet: Tweet = {
         name: 'Stanislav',
         handle: '@khromov',
         time: '8h',
@@ -13,20 +21,25 @@
         avatarSeed: 'main-tweet'
     };
 
-    export let comments = [
+    export let comments: Comment[] = [
         { name: 'Alice', handle: '@alice', time: '2h', content: 'Great post!', avatarSeed: 'comment-1' },
         { name: 'Bob', handle: '@bob', time: '1h', content: 'I agree!', avatarSeed: 'comment-2' }
     ];
 
-    function createAvatarUri(seed: any) {
-        const avatar = createAvatar(bottts, {
-            seed: seed,
-            size: 48
-        });
-        return avatar.toDataUri();
+
+    function getAvatarUrl(id: string) {
+        // Simple hash function to convert string to number
+        const hash =  id.split('').reduce((a, b) => {
+            a = ((a << 5) - a) + b.charCodeAt(0);
+            return a & a;
+        }, 0);
+        
+        // Use the hash to select an avatar (1-20)
+        const avatarNumber = (Math.abs(hash) % 20) + 1;
+        return `/avatars/${avatarNumber}.svg`;
     }
 
-    function handleCommentClick(comment: any) {
+    function handleCommentClick(comment: Comment) {
         const currentComponents = $page.state.stackedComponents || [];
         const newComponents = [
             ...currentComponents,
@@ -50,7 +63,7 @@
 
 <div class="tweet-container">
     <div class="tweet main-tweet">
-        <img class="avatar" src={createAvatarUri(tweet.avatarSeed)} alt="Avatar" />
+        <img class="avatar" src={getAvatarUrl(tweet.avatarSeed)} alt="Avatar" />
         <div class="tweet-content">
             <div class="tweet-header">
                 <span class="name">{tweet.name}</span>
@@ -65,7 +78,7 @@
         {#each comments as comment}
             <!-- svelte-ignore a11y-no-static-element-interactions a11y-click-events-have-key-events -->
             <div class="tweet comment" on:click={() => handleCommentClick(comment)}>
-                <img class="avatar" src={createAvatarUri(comment.avatarSeed)} alt="Avatar" />
+                <img class="avatar" src={getAvatarUrl(comment.avatarSeed)} alt="Avatar" />
                 <div class="tweet-content">
                     <div class="tweet-header">
                         <span class="name">{comment.name}</span>
