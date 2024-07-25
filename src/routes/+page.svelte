@@ -23,6 +23,8 @@
 	$effect(() => {
 		if ($page.state.stackedComponents) {
 			stackedComponents = $page.state.stackedComponents;
+		} else {
+			stackedComponents = [];
 		}
 	});
 
