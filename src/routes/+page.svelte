@@ -97,7 +97,7 @@
 </script>
 
 <div class="page-wrapper">
-	<div class="swiper" bind:this={swiperEl}>
+	<div class="swiper" bind:this={swiperEl} class:noInteraction={stackedComponents.length > 0}>
 		<div class="swiper-wrapper">
 			{#each Array(3) as _, i}
 				<div class="swiper-slide">
@@ -130,5 +130,11 @@
 	.page-wrapper {
 		overflow-y: hidden;
 		position: relative;
+	}
+
+	/* While the stacked messages are sliding in, you can accidentally tap on the swiper element
+		which leads to invalid state, so we disable interactions while the stacked messages are showing */
+	.swiper.noInteraction {
+		pointer-events: none;
 	}
 </style>

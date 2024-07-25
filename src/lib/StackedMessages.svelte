@@ -23,8 +23,8 @@
 	}
 
 	let topComponents = $derived.by(() => {
-		// Ensure only the top 3 messages are rendered
-		return components.slice(-1).reverse();
+		// Ensure only the top messages are rendered
+		return components.slice(-3).reverse();
 	});
 </script>
 
@@ -33,8 +33,8 @@
 		<div
 			class="message-layer"
 			style="z-index: {components.length - index}"
-			in:fly={{ x: 300, duration: 300 }}
-			out:fly={{ x: 300, duration: 300 }}
+			in:fly={{ x: 300, duration: 200 }}
+			out:fly={{ x: 300, duration: 200 }}
 		>
 			<button class="close-button" on:click={handleClose}>Close</button>
 			<svelte:component this={componentMappings[layer.componentName]} {...layer.props} />
