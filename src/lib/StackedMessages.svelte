@@ -24,7 +24,7 @@
 
 	let topComponents = $derived.by(() => {
 		// Ensure only the top messages are rendered
-		return components.slice(-3).reverse();
+		return components.slice(-10).reverse();
 	});
 </script>
 
