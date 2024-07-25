@@ -2,7 +2,7 @@
 	import '$lib/reset.css';
 	import Nav from '$lib/Nav.svelte';
 	import { page } from '$app/stores';
-	import { onNavigate, pushState } from '$app/navigation';
+	import { goto, onNavigate, pushState } from '$app/navigation';
 	import { activeTabIndex } from '$lib/stores/tab';
 
 	onNavigate((navigation) => {
@@ -32,7 +32,11 @@
 
 	const handleLogoClick = () => {
 		// Clear the stack of components
-		pushState('', { stackedComponents: [] });
+		if($page.url.pathname === '/' && $page.state.stackedComponents.length > 0) {
+			pushState('', { stackedComponents: [] });
+		} else {
+			goto('/');
+		}
 	}
 </script>
 
