@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { spaNavigation } from '$lib/stores/load';
+
 	let displayName = 'Stanislav';
 	let bio = 'Just another Svelte user';
 	let darkMode = true;
@@ -19,7 +21,9 @@
 			return { scrollY: settingsContainer?.scrollTop ?? 0 };
 		},
 		restore: (value: { scrollY: number }) => {
-			console.log('restore', value);
+			if (!$spaNavigation) {
+				return;
+			}
 			settingsContainer.scrollTop = value.scrollY;
 		}
 	};

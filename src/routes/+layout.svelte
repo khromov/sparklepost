@@ -2,8 +2,14 @@
 	import '$lib/reset.css';
 	import Nav from '$lib/Nav.svelte';
 	import { page } from '$app/stores';
-	import { goto, onNavigate, pushState } from '$app/navigation';
+	import { beforeNavigate, goto, onNavigate, pushState } from '$app/navigation';
 	import { activeTabIndex } from '$lib/stores/tab';
+	import { spaNavigation } from '$lib/stores/load';
+
+	beforeNavigate((navigation) => {
+		// If we have navigated at least once, we are in SPA mode
+		$spaNavigation = true;
+	});
 
 	onNavigate((navigation) => {
 		$activeTabIndex = 0;

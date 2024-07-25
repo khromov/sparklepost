@@ -9,6 +9,7 @@
 	import { pushState } from '$app/navigation';
 	import { page } from '$app/stores';
 	import StackedMessages from '$lib/StackedMessages.svelte';
+	import { spaNavigation } from '$lib/stores/load';
 
 	let swiper: Swiper | null;
 	let swiperEl: HTMLElement;
@@ -70,21 +71,23 @@
 	export const snapshot = {
 		capture: () => {
 			return {
-				scrollPositions: scrollableViews.map(view => view?.scrollTop ?? 0),
+				scrollPositions: scrollableViews.map((view) => view?.scrollTop ?? 0),
 				activeTabIndex: $activeTabIndex
 			};
 		},
-		restore: (value: { scrollPositions: number[], activeTabIndex: number }) => {
-			console.log('restore', value);
-			setTimeout(() => {
-				scrollableViews.forEach((view, index) => {
-					if (view) {
-						view.scrollTop = value.scrollPositions[index] ?? 0;
-					}
-				});
-				$activeTabIndex = value.activeTabIndex;
-				swiper?.slideTo(value.activeTabIndex);
-			}, 0);
+		restore: (value: { scrollPositions: number[]; activeTabIndex: number }) => {
+			// We do not want to restore the tab index and Swiper if it's a full page reload
+			if (!$spaNavigation) {
+				return;
+			}
+
+			scrollableViews.forEach((view, index) => {
+				if (view) {
+					view.scrollTop = value.scrollPositions[index] ?? 0;
+				}
+			});
+			$activeTabIndex = value.activeTabIndex;
+			swiper?.slideTo(value.activeTabIndex);
 		}
 	};
 </script>
