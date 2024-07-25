@@ -27,7 +27,7 @@
 	});
 
 	onMount(() => {
-		swiper = new Swiper(swiperEl, {
+		swiper = swiperEl ? new Swiper(swiperEl, {
 			direction: 'horizontal',
 			slidesPerView: 1,
 			speed: 400,
@@ -39,7 +39,7 @@
 					activeTabIndex.set(e.activeIndex);
 				}
 			}
-		});
+		}) : null;
 
 		// To avoid rerenders
 		mounted = true;
