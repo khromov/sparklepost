@@ -11,7 +11,7 @@
 	let { components = $bindable([]) } = $props<{ components: ComponentProps[] }>();
 
 	const componentMappings = {
-		"MessageWithComments": MessageWithComments,
+		MessageWithComments: MessageWithComments
 		// Add other components here as needed
 	};
 
@@ -37,7 +37,10 @@
 			out:fly={{ x: 300, duration: 200 }}
 		>
 			<button class="close-button" onclick={handleClose}>Close</button>
-			<svelte:component this={componentMappings[layer.componentName as keyof typeof componentMappings]} {...layer.props} />
+			<svelte:component
+				this={componentMappings[layer.componentName as keyof typeof componentMappings]}
+				{...layer.props}
+			/>
 		</div>
 	{/each}
 </div>
