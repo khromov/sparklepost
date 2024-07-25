@@ -17,7 +17,7 @@
 
 	function handleClose() {
 		if (components.length > 0) {
-			const newComponents = components.slice(0, -1);
+			const newComponents = $state.snapshot(components).slice(0, -1);
 			pushState('', { stackedComponents: newComponents });
 		}
 	}
