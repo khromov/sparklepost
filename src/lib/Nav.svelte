@@ -1,9 +1,12 @@
 <script lang="ts">
+	import { pushState } from '$app/navigation';
+
 	//import { componentsStore } from '$lib/stores/stackedMessages';
 	import { tabs, activeTabIndex } from './stores/tab';
 
 	function handleTabClick(index: number) {
 		$activeTabIndex = index;
+		pushState('', { stackedComponents: [] });
 		//$componentsStore = [];
 	}
 </script>

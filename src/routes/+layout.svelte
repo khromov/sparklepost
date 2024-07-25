@@ -2,7 +2,7 @@
 	import '$lib/reset.css';
 	import Nav from '$lib/Nav.svelte';
 	import { page } from '$app/stores';
-	import { onNavigate } from '$app/navigation';
+	import { onNavigate, pushState } from '$app/navigation';
 	import { activeTabIndex } from '$lib/stores/tab';
 
 	onNavigate((navigation) => {
@@ -29,13 +29,18 @@
 			});
 		});
 	});
+
+	const handleLogoClick = () => {
+		// Clear the stack of components
+		pushState('', { stackedComponents: [] });
+	}
 </script>
 
 <main>
 	<header>
 		<div class="profile-icon" />
 		<div class="logo">
-			<a href="/">🙈</a>
+			<a href="/" on:click|preventDefault={handleLogoClick}>🙈</a>
 		</div>
 		<a href="/settings">
 			<div class="settings-icon" />
