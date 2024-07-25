@@ -2,6 +2,7 @@
 	import Message from '$lib/Message.svelte';
 	import ScrollableView from '$lib/ScrollableView.svelte';
 	import { activeTabIndex } from '$lib/stores/tab';
+	import { onMount } from 'svelte';
 	import Swiper from 'swiper/bundle';
 	import 'swiper/css/bundle';
 	import { generateRandomComments } from '$lib/random';
@@ -25,25 +26,23 @@
 		}
 	});
 
-	$effect(() => {
-		if (swiperEl) {
-			swiper = new Swiper(swiperEl, {
-				direction: 'horizontal',
-				slidesPerView: 1,
-				speed: 400,
-				grabCursor: true,
-				shortSwipes: true,
-				longSwipesRatio: 0.1,
-				on: {
-					slideChange: function (e) {
-						activeTabIndex.set(e.activeIndex);
-					}
+	onMount(() => {
+		swiper = new Swiper(swiperEl, {
+			direction: 'horizontal',
+			slidesPerView: 1,
+			speed: 400,
+			grabCursor: true,
+			shortSwipes: true,
+			longSwipesRatio: 0.1,
+			on: {
+				slideChange: function (e) {
+					activeTabIndex.set(e.activeIndex);
 				}
-			});
+			}
+		});
 
-			// To avoid rerenders
-			mounted = true;
-		}
+		// To avoid rerenders
+		mounted = true;
 	});
 
 	$effect(() => {
