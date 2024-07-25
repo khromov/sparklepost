@@ -17,6 +17,8 @@
 
 	let stackedComponents: Array<{ componentName: any; props: any }> = [];
 
+	let scrollableViews: HTMLElement[] = [];
+
 	$: {
 		if ($page.state.stackedComponents) {
 			stackedComponents = $page.state.stackedComponents;
@@ -64,6 +66,27 @@
 		];
 		pushState('', { stackedComponents: newComponents });
 	}
+
+	export const snapshot = {
+		capture: () => {
+			return {
+				scrollPositions: scrollableViews.map(view => view?.scrollTop ?? 0),
+				activeTabIndex: $activeTabIndex
+			};
+		},
+		restore: (value: { scrollPositions: number[], activeTabIndex: number }) => {
+			console.log('restore', value);
+			setTimeout(() => {
+				scrollableViews.forEach((view, index) => {
+					if (view) {
+						view.scrollTop = value.scrollPositions[index] ?? 0;
+					}
+				});
+				$activeTabIndex = value.activeTabIndex;
+				swiper?.slideTo(value.activeTabIndex);
+			}, 0);
+		}
+	};
 </script>
 
 <div class="page-wrapper">
@@ -71,7 +94,7 @@
 		<div class="swiper-wrapper">
 			{#each Array(3) as _, i}
 				<div class="swiper-slide">
-					<ScrollableView>
+					<ScrollableView bind:scrollableView={scrollableViews[i]}>
 						{#each Array(10) as _, x}
 							<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
 							<div
@@ -88,7 +111,7 @@
 							</div>
 						{/each}
 					</ScrollableView>
-				</div>				
+				</div>
 			{/each}
 		</div>
 	</div>

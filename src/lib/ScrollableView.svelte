@@ -4,8 +4,11 @@
     let scrollContainer: HTMLElement;
     let scrollPosition = 0;
 
+    export let scrollableView: HTMLElement | undefined = undefined;
+
     onMount(() => {
         scrollContainer.scrollTop = scrollPosition;
+        scrollableView = scrollContainer;
     });
 
     function handleScroll() {
