@@ -3,7 +3,12 @@
 	import { pushState } from '$app/navigation';
 	import MessageWithComments from './MessageWithComments.svelte';
 
-	export let components: Array<{ componentName: string; props: any }> = [];
+	interface MyProps {
+		components: Array<{ componentName: string; props: any }>;
+	};
+
+	//export let components: Array<{ componentName: string; props: any }> = [];
+	let { components = $bindable([]) }: MyProps = $props();
 
 	const componentMappings = {
 		"MessageWithComments": MessageWithComments,
