@@ -31,7 +31,7 @@
 			in:fly={{ x: 300, duration: 300, delay: 0 }}
 			out:fly={{ x: 300, duration: 300 }}
 		>
-			<button class="close-button" on:click={handleClose}>Close</button>
+			<button class="close-button" onclick={handleClose}>Close</button>
 			<svelte:component this={componentMappings[layer.componentName]} {...layer.props} />
 		</div>
 	{/each}

@@ -54,7 +54,7 @@
 	<header>
 		<div class="profile-icon"></div>
 		<div class="logo">
-			<a href="/" on:click|preventDefault={handleLogoClick}>🙈</a>
+			<a href="/" on:click|preventDefault={handleLogoClick}>✨</a>
 		</div>
 		<a href="/settings">
 			<div class="settings-icon">
