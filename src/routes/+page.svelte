@@ -90,10 +90,11 @@
 					</ScrollableView>
 				</div>
 
-				<StackedMessages components={stackedComponents} />
+				
 			{/each}
 		</div>
 	</div>
+	<StackedMessages components={stackedComponents} />
 </div>
 
 <style>
