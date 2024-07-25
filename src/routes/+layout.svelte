@@ -52,12 +52,12 @@
 
 <main>
 	<header>
-		<div class="profile-icon" />
+		<div class="profile-icon"></div>
 		<div class="logo">
 			<a href="/" on:click|preventDefault={handleLogoClick}>🙈</a>
 		</div>
 		<a href="/settings">
-			<div class="settings-icon" />
+			<div class="settings-icon">
 		</a>
 	</header>
 
@@ -70,10 +70,10 @@
 	</div>
 
 	<footer>
-		<button class="home-icon" on:click={handleBottomMockClick} />
-		<button class="search-icon" on:click={handleBottomMockClick} />
-		<button class="notifications-icon" on:click={handleBottomMockClick} />
-		<button class="messages-icon" on:click={handleBottomMockClick} />
+		<button class="home-icon" on:click={handleBottomMockClick}></button>
+		<button class="search-icon" on:click={handleBottomMockClick}></button>
+		<button class="notifications-icon" on:click={handleBottomMockClick}></button>
+		<button class="messages-icon" on:click={handleBottomMockClick}></button>
 	</footer>
 </main>
 
@@ -109,7 +109,6 @@
 	.content {
 		flex-grow: 1;
 		overflow-y: hidden;
-		/* overflow-y: auto; */
 	}
 
 	.profile-icon,
@@ -159,6 +158,7 @@
 	}
 
 	footer {
+		view-transition-name: footer;
 		display: flex;
 		justify-content: space-around;
 		padding: 10px 0;
