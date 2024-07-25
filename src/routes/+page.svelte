@@ -2,7 +2,6 @@
 	import Message from '$lib/Message.svelte';
 	import ScrollableView from '$lib/ScrollableView.svelte';
 	import { activeTabIndex } from '$lib/stores/tab';
-	import { onMount } from 'svelte';
 	import Swiper from 'swiper/bundle';
 	import 'swiper/css/bundle';
 	import { generateRandomComments } from '$lib/random';
@@ -11,41 +10,47 @@
 	import StackedMessages from '$lib/StackedMessages.svelte';
 	import { spaNavigation } from '$lib/stores/load';
 
-	let swiper: Swiper | null;
-	let swiperEl: HTMLElement;
+	let swiper = $state<Swiper | null>(null);
+	let swiperEl = $state<HTMLElement | null>(null);
 
-	let mounted = false;
+	let mounted = $state(false);
 
-	let stackedComponents: Array<{ componentName: any; props: any }> = [];
+	let stackedComponents = $state<Array<{ componentName: any; props: any }>>([]);
 
-	let scrollableViews: HTMLElement[] = [];
+	let scrollableViews = $state<HTMLElement[]>([]);
 
-	$: {
+	$effect(() => {
 		if ($page.state.stackedComponents) {
 			stackedComponents = $page.state.stackedComponents;
 		}
-	}
-
-	onMount(() => {
-		swiper = new Swiper(swiperEl, {
-			direction: 'horizontal',
-			slidesPerView: 1,
-			speed: 400,
-			grabCursor: true,
-			shortSwipes: true,
-			longSwipesRatio: 0.1,
-			on: {
-				slideChange: function (e) {
-					$activeTabIndex = e.activeIndex;
-				}
-			}
-		});
-
-		// To avoid rerenders
-		mounted = true;
 	});
 
-	$: swiper && mounted && swiper?.slideTo($activeTabIndex);
+	$effect(() => {
+		if (swiperEl) {
+			swiper = new Swiper(swiperEl, {
+				direction: 'horizontal',
+				slidesPerView: 1,
+				speed: 400,
+				grabCursor: true,
+				shortSwipes: true,
+				longSwipesRatio: 0.1,
+				on: {
+					slideChange: function (e) {
+						activeTabIndex.set(e.activeIndex);
+					}
+				}
+			});
+
+			// To avoid rerenders
+			mounted = true;
+		}
+	});
+
+	$effect(() => {
+		if (swiper && mounted) {
+			swiper.slideTo($activeTabIndex);
+		}
+	});
 
 	function handleMessageClick(message: any) {
 		const currentComponents = $page.state.stackedComponents || [];
@@ -86,7 +91,7 @@
 					view.scrollTop = value.scrollPositions[index] ?? 0;
 				}
 			});
-			$activeTabIndex = value.activeTabIndex;
+			activeTabIndex.set(value.activeTabIndex);
 			swiper?.slideTo(value.activeTabIndex);
 		}
 	};
@@ -101,7 +106,7 @@
 						{#each Array(10) as _, x}
 							<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
 							<div
-								on:click={() =>
+								onclick={() =>
 									handleMessageClick({
 										name: 'User',
 										handle: '@user',
