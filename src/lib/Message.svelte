@@ -16,7 +16,7 @@
 		size: 48
 	});
 
-  const avatarUri = avatar.toDataUri();
+	const avatarUri = avatar.toDataUri();
 </script>
 
 <div class="tweet">
@@ -38,12 +38,12 @@
 		border-bottom: 1px solid #2f3336;
 	}
 
-  .avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    margin-right: 10px;
-  }
+	.avatar {
+		width: 48px;
+		height: 48px;
+		border-radius: 50%;
+		margin-right: 10px;
+	}
 
 	.tweet-content {
 		flex: 1;

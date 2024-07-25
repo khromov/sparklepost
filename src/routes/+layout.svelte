@@ -2,32 +2,21 @@
 	import '$lib/reset.css';
 	import Nav from '$lib/Nav.svelte';
 	import { page } from '$app/stores';
-	import { afterNavigate, beforeNavigate, onNavigate } from '$app/navigation';
+	import { beforeNavigate, goto, onNavigate, pushState } from '$app/navigation';
 	import { activeTabIndex } from '$lib/stores/tab';
-	import { componentsStore } from '$lib/stores/stackedMessages';
+	import { spaNavigation } from '$lib/stores/load';
 
-	beforeNavigate(({ willUnload, cancel, from, to, ...rest }) => {
-		console.log('xxx', from, to, rest);
-		if(
-			// (to && to.route.id === '/') &&
-			$componentsStore.length > 0 //&& 
-			//!willUnload
-		) {
-			// Remove the top element from the stack
-			$componentsStore = $componentsStore.slice(0, -1);
-			cancel();
-		}
+	beforeNavigate((navigation) => {
+		// If we have navigated at least once, we are in SPA mode
+		$spaNavigation = true;
 	});
 
 	onNavigate((navigation) => {
 		$activeTabIndex = 0;
-		$componentsStore = [];
 
 		if (!document.startViewTransition) return;
 
-		console.log('ft', navigation.from?.route.id, navigation.to?.route.id);
-
-		if(navigation.from?.route.id === navigation.to?.route.id) {
+		if (navigation.from?.route.id === navigation.to?.route.id) {
 			return;
 		}
 
@@ -45,17 +34,27 @@
 				document.documentElement.classList.remove('back-transition');
 			});
 		});
-
 	});
 
-	//$: console.log('Current path: ', $page.url.pathname); // .trace
+	const handleLogoClick = () => {
+		// Clear the stack of components
+		if($page.url.pathname === '/' && $page.state.stackedComponents && $page.state.stackedComponents.length > 0) {
+			pushState('', { stackedComponents: [] });
+		} else {
+			goto('/');
+		}
+	}
+
+	const handleBottomMockClick = () => {
+		alert(`I'm not functional, try the tabs and settings button instead!`);
+	}
 </script>
 
 <main>
 	<header>
-		<div class="profile-icon"></div>
+		<div class="profile-icon" />
 		<div class="logo">
-			<a href="/">🙈</a>
+			<a href="/" on:click|preventDefault={handleLogoClick}>🙈</a>
 		</div>
 		<a href="/settings">
 			<div class="settings-icon" />
@@ -71,10 +70,10 @@
 	</div>
 
 	<footer>
-		<button class="home-icon"></button>
-		<button class="search-icon"></button>
-		<button class="notifications-icon"></button>
-		<button class="messages-icon"></button>
+		<button class="home-icon" on:click={handleBottomMockClick} />
+		<button class="search-icon" on:click={handleBottomMockClick} />
+		<button class="notifications-icon" on:click={handleBottomMockClick} />
+		<button class="messages-icon" on:click={handleBottomMockClick} />
 	</footer>
 </main>
 
@@ -82,6 +81,7 @@
 	/* Shared CSS */
 	:global(body) {
 		background-color: black;
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	main {
@@ -124,8 +124,8 @@
 		font-size: 24px;
 	}
 
-	.logo {
-		font-size: 24px;
+	.logo a {
+		text-decoration: none;
 	}
 
 	button {

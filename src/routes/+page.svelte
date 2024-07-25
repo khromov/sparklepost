@@ -5,15 +5,26 @@
 	import { onMount } from 'svelte';
 	import Swiper from 'swiper/bundle';
 	import 'swiper/css/bundle';
-	import StackedMessages from '$lib/StackedMessages.svelte';
-	import MessageWithComments from '$lib/MessageWithComments.svelte';
-	import { componentsStore } from '$lib/stores/stackedMessages';
 	import { generateRandomComments } from '$lib/random';
+	import { pushState } from '$app/navigation';
+	import { page } from '$app/stores';
+	import StackedMessages from '$lib/StackedMessages.svelte';
+	import { spaNavigation } from '$lib/stores/load';
 
 	let swiper: Swiper | null;
 	let swiperEl: HTMLElement;
 
 	let mounted = false;
+
+	let stackedComponents: Array<{ componentName: any; props: any }> = [];
+
+	let scrollableViews: HTMLElement[] = [];
+
+	$: {
+		if ($page.state.stackedComponents) {
+			stackedComponents = $page.state.stackedComponents;
+		}
+	}
 
 	onMount(() => {
 		swiper = new Swiper(swiperEl, {
@@ -37,10 +48,11 @@
 	$: swiper && mounted && swiper?.slideTo($activeTabIndex);
 
 	function handleMessageClick(message: any) {
-		componentsStore.update((components) => [
-			...components,
+		const currentComponents = $page.state.stackedComponents || [];
+		const newComponents = [
+			...currentComponents,
 			{
-				component: MessageWithComments,
+				componentName: 'MessageWithComments',
 				props: {
 					tweet: {
 						name: message.name,
@@ -52,10 +64,32 @@
 					comments: generateRandomComments()
 				}
 			}
-		]);
+		];
+		pushState('', { stackedComponents: newComponents });
 	}
 
-	
+	export const snapshot = {
+		capture: () => {
+			return {
+				scrollPositions: scrollableViews.map((view) => view?.scrollTop ?? 0),
+				activeTabIndex: $activeTabIndex
+			};
+		},
+		restore: (value: { scrollPositions: number[]; activeTabIndex: number }) => {
+			// We do not want to restore the tab index and Swiper if it's a full page reload
+			if (!$spaNavigation) {
+				return;
+			}
+
+			scrollableViews.forEach((view, index) => {
+				if (view) {
+					view.scrollTop = value.scrollPositions[index] ?? 0;
+				}
+			});
+			$activeTabIndex = value.activeTabIndex;
+			swiper?.slideTo(value.activeTabIndex);
+		}
+	};
 </script>
 
 <div class="page-wrapper">
@@ -63,7 +97,7 @@
 		<div class="swiper-wrapper">
 			{#each Array(3) as _, i}
 				<div class="swiper-slide">
-					<ScrollableView>
+					<ScrollableView bind:scrollableView={scrollableViews[i]}>
 						{#each Array(10) as _, x}
 							<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
 							<div
@@ -84,7 +118,7 @@
 			{/each}
 		</div>
 	</div>
-	<StackedMessages components={$componentsStore} {componentsStore} />
+	<StackedMessages components={stackedComponents} />
 </div>
 
 <style>

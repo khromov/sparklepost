@@ -1,12 +1,10 @@
 <script lang="ts">
     import { createAvatar } from '@dicebear/core';
     import { bottts } from '@dicebear/collection';
-    import type { Writable } from 'svelte/store';
-    import MessageWithComments from '$lib/MessageWithComments.svelte';
-	import { generateRandomComments } from './random';
+    import { generateRandomComments } from './random';
+    import { pushState } from '$app/navigation';
+    import { page } from '$app/stores';
 
-    export let componentsStore: Writable<Array<any>>;
-   
     export let tweet = {
         name: 'Stanislav',
         handle: '@khromov',
@@ -29,10 +27,11 @@
     }
 
     function handleCommentClick(comment: any) {
-        componentsStore.update(components => [
-            ...components,
+        const currentComponents = $page.state.stackedComponents || [];
+        const newComponents = [
+            ...currentComponents,
             {
-                component: MessageWithComments,
+                componentName: "MessageWithComments",
                 props: {
                     tweet: {
                         name: comment.name,
@@ -44,7 +43,8 @@
                     comments: generateRandomComments()
                 }
             }
-        ]);
+        ];
+        pushState('', { stackedComponents: newComponents });
     }
 </script>
 

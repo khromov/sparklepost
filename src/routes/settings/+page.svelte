@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { spaNavigation } from '$lib/stores/load';
+
 	let displayName = 'Stanislav';
 	let bio = 'Just another Svelte user';
 	let darkMode = true;
@@ -7,13 +9,27 @@
 	let language = 'en';
 	let privacyLevel = 'public';
 
+	let settingsContainer: HTMLDivElement;
+
 	function saveSettings() {
 		// Implement save functionality here
 		alert('Settings saved!');
 	}
+
+	export const snapshot = {
+		capture: () => {
+			return { scrollY: settingsContainer?.scrollTop ?? 0 };
+		},
+		restore: (value: { scrollY: number }) => {
+			if (!$spaNavigation) {
+				return;
+			}
+			settingsContainer.scrollTop = value.scrollY;
+		}
+	};
 </script>
 
-<div class="settings-container">
+<div class="settings-container" bind:this={settingsContainer}>
 	<h1>Settings</h1>
 
 	<div class="setting-group">

@@ -1,9 +1,21 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
-	import type { Writable } from 'svelte/store';
+	import { pushState } from '$app/navigation';
+	import MessageWithComments from './MessageWithComments.svelte';
 
-	export let components: Array<{ component: any; props: any }> = [];
-	export let componentsStore: Writable<Array<any>>;
+	export let components: Array<{ componentName: string; props: any }> = [];
+
+	const componentMappings = {
+		"MessageWithComments": MessageWithComments,
+		// Add other components here as needed
+	};
+
+	function handleClose() {
+		if (components.length > 0) {
+			const newComponents = components.slice(0, -1);
+			pushState('', { stackedComponents: newComponents });
+		}
+	}
 </script>
 
 <div class="stacked-container">
@@ -14,16 +26,14 @@
 			in:fly={{ x: 300, duration: 300, delay: 0 }}
 			out:fly={{ x: 300, duration: 300 }}
 		>
-			<svelte:component this={layer.component} {...layer.props} {componentsStore} />
+			<button class="close-button" on:click={handleClose}>Close</button>
+			<svelte:component this={componentMappings[layer.componentName]} {...layer.props} />
 		</div>
 	{/each}
 </div>
 
 <style>
 	.stacked-container {
-		left: 0;
-		right: 0;
-		bottom: 0;
 		background-color: rgba(0, 0, 0, 0.7);
 		z-index: 1000;
 		overflow: hidden;
@@ -39,5 +49,16 @@
 		color: white;
 		box-sizing: border-box;
 		overflow-y: auto;
+	}
+
+	.close-button {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		background-color: transparent;
+		color: white;
+		border: none;
+		font-size: 16px;
+		cursor: pointer;
 	}
 </style>

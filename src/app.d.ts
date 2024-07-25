@@ -5,7 +5,9 @@ declare global {
 		// interface Error {}
 		// interface Locals {}
 		// interface PageData {}
-		// interface PageState {}
+		interface PageState {
+			stackedComponents: Array<{ componentName: any; props: any }>;
+		}
 		// interface Platform {}
 	}
 
