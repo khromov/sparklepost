@@ -71,6 +71,7 @@
 	/* Shared CSS */
 	:global(body) {
 		background-color: black;
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	main {
@@ -113,8 +114,8 @@
 		font-size: 24px;
 	}
 
-	.logo {
-		font-size: 24px;
+	.logo a {
+		text-decoration: none;
 	}
 
 	button {
