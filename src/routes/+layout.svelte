@@ -38,6 +38,10 @@
 			goto('/');
 		}
 	}
+
+	const handleBottomMockClick = () => {
+		alert(`I'm not functional, try the tabs and settings button instead!`);
+	}
 </script>
 
 <main>
@@ -60,10 +64,10 @@
 	</div>
 
 	<footer>
-		<button class="home-icon" />
-		<button class="search-icon" />
-		<button class="notifications-icon" />
-		<button class="messages-icon" />
+		<button class="home-icon" on:click={handleBottomMockClick} />
+		<button class="search-icon" on:click={handleBottomMockClick} />
+		<button class="notifications-icon" on:click={handleBottomMockClick} />
+		<button class="messages-icon" on:click={handleBottomMockClick} />
 	</footer>
 </main>
 
