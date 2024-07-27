@@ -1,13 +1,15 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	let isOnline = $state(navigator.onLine);
+	let isOnline = $state(true);
 
 	function updateOnlineStatus() {
 		isOnline = navigator.onLine;
 	}
 
 	onMount(() => {
+        updateOnlineStatus();
+
 		window.addEventListener('online', updateOnlineStatus);
 		window.addEventListener('offline', updateOnlineStatus);
 
