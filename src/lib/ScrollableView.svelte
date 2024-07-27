@@ -1,7 +1,10 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
+    import { onMount, type Snippet } from 'svelte';
 
-    let { scrollableView = $bindable<HTMLElement | undefined>() } = $props();
+    let { scrollableView = $bindable(), children }: {
+		scrollableView?: HTMLElement | undefined;
+		children?: Snippet;
+	} = $props();
 
     let scrollContainer: HTMLElement;
     let scrollPosition = $state(0);
@@ -17,7 +20,9 @@
 </script>
 
 <div class="scrollable-content" bind:this={scrollContainer} onscroll={handleScroll}>
-	<slot />
+	{#if children}
+		{@render children()} 
+	{/if}
 </div>
 
 <style>
