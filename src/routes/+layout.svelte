@@ -6,6 +6,9 @@
 	import { activeTabIndex } from '$lib/stores/tab';
 	import { spaNavigation } from '$lib/stores/load';
 	import OnlineBanner from '$lib/OnlineBanner.svelte';
+	import type { Snippet } from 'svelte';
+
+	let { children }: { children?: Snippet } = $props();
 
 	beforeNavigate((navigation) => {
 		// If we have navigated at least once, we are in SPA mode
@@ -55,7 +58,9 @@
 
 <main>
 	<header>
-		<div class="profile-icon"></div>
+		<div class="profile-icon">
+			<img src="/avatars/1.svg" alt="Profile" />
+		</div>
 		<div class="logo">
 			<a href="/" onclick={handleLogoClick}>✨</a>
 		</div>
@@ -71,7 +76,9 @@
 	<OnlineBanner />
 
 	<div class="content">
-		<slot />
+		{#if children}
+			{@render children()}
+		{/if}
 	</div>
 
 	<footer>
@@ -123,6 +130,10 @@
 		height: 30px;
 		border-radius: 50%;
 		background-color: #333;
+	}
+
+	.profile-icon img {
+		border-radius: 50%;
 	}
 
 	.logo {
