@@ -1,22 +1,22 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+    import { onMount } from 'svelte';
 
-	let scrollContainer: HTMLElement;
-	let scrollPosition = 0;
+    let { scrollableView = $bindable<HTMLElement | undefined>() } = $props();
 
-	export let scrollableView: HTMLElement | undefined = undefined;
+    let scrollContainer: HTMLElement;
+    let scrollPosition = $state(0);
 
-	onMount(() => {
-		scrollContainer.scrollTop = scrollPosition;
-		scrollableView = scrollContainer;
-	});
+    onMount(() => {
+        scrollContainer.scrollTop = scrollPosition;
+        scrollableView = scrollContainer;
+    });
 
-	function handleScroll() {
-		scrollPosition = scrollContainer.scrollTop;
-	}
+    function handleScroll() {
+        scrollPosition = scrollContainer.scrollTop;
+    }
 </script>
 
-<div class="scrollable-content" bind:this={scrollContainer} on:scroll={handleScroll}>
+<div class="scrollable-content" bind:this={scrollContainer} onscroll={handleScroll}>
 	<slot />
 </div>
 
