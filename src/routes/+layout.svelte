@@ -5,6 +5,7 @@
 	import { beforeNavigate, goto, onNavigate, pushState } from '$app/navigation';
 	import { activeTabIndex } from '$lib/stores/tab';
 	import { spaNavigation } from '$lib/stores/load';
+	import OnlineBanner from '$lib/OnlineBanner.svelte';
 
 	beforeNavigate((navigation) => {
 		// If we have navigated at least once, we are in SPA mode
@@ -64,6 +65,8 @@
 	{#if $page.url.pathname === '/'}
 		<Nav />
 	{/if}
+
+	<OnlineBanner />
 
 	<div class="content">
 		<slot />
