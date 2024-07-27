@@ -1,19 +1,19 @@
 <script lang="ts">
 	import { spaNavigation } from '$lib/stores/load';
 
-	let displayName = 'Stanislav';
-	let bio = 'Just another Svelte user';
-	let darkMode = true;
-	let emailNotifications = true;
-	let pushNotifications = false;
-	let language = 'en';
-	let privacyLevel = 'public';
+	let displayName = $state('Stanislav');
+    let bio = $state('Just another Svelte user');
+    let darkMode = $state(true);
+    let emailNotifications = $state(true);
+    let pushNotifications = $state(false);
+    let language = $state('en');
+    let privacyLevel = $state('public');
 
 	let settingsContainer: HTMLDivElement;
 
 	function saveSettings() {
 		// Implement save functionality here
-		alert('Settings saved!');
+		alert('Settings saved! (not really, just a demo)');
 	}
 
 	export const snapshot = {
@@ -80,7 +80,14 @@
 		</select>
 	</div>
 
-	<button on:click={saveSettings}>Save Settings</button>
+	<div class="setting-group">
+		<h2>Really long text so you can test scroll restoration!</h2>
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam lectus felis, finibus a lectus ac, tempus pellentesque justo. Proin sed commodo mauris. Aliquam quis nisi tristique ipsum porta ultrices vitae sit amet velit. Fusce sapien nisi, laoreet ac varius id, commodo vel enim. Aenean porta eget nisl quis condimentum. Proin congue sit amet nulla ut tincidunt. Ut nunc nibh, dapibus id sodales eu, iaculis quis felis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nunc porta, diam et tincidunt molestie, nulla lacus luctus purus, nec convallis justo lacus at nibh. Suspendisse dignissim tortor ut odio consectetur semper. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. 
+		</p>
+	</div>
+
+	<button onclick={saveSettings}>Save Settings</button>
 </div>
 
 <style>

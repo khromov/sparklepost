@@ -3,31 +3,44 @@
 	import { pushState } from '$app/navigation';
 	import MessageWithComments from './MessageWithComments.svelte';
 
-	export let components: Array<{ componentName: string; props: any }> = [];
+	interface ComponentProps {
+		componentName: string;
+		props: any;
+	}
+
+	let { components = $bindable([]) } = $props<{ components: ComponentProps[] }>();
 
 	const componentMappings = {
-		"MessageWithComments": MessageWithComments,
+		MessageWithComments: MessageWithComments
 		// Add other components here as needed
 	};
 
 	function handleClose() {
 		if (components.length > 0) {
-			const newComponents = components.slice(0, -1);
+			const newComponents = $state.snapshot(components).slice(0, -1);
 			pushState('', { stackedComponents: newComponents });
 		}
 	}
+
+	let topComponents = $derived.by(() => {
+		// Ensure only the top messages are rendered
+		return components.slice(-10).reverse();
+	});
 </script>
 
 <div class="stacked-container">
-	{#each components as layer, index (index)}
+	{#each topComponents as layer, index (components.length - index - 1)}
 		<div
 			class="message-layer"
-			style="z-index: {index + 1}"
-			in:fly={{ x: 300, duration: 300, delay: 0 }}
-			out:fly={{ x: 300, duration: 300 }}
+			style="z-index: {components.length - index}"
+			in:fly={{ x: 300, duration: 200 }}
+			out:fly={{ x: 300, duration: 200 }}
 		>
-			<button class="close-button" on:click={handleClose}>Close</button>
-			<svelte:component this={componentMappings[layer.componentName]} {...layer.props} />
+			<button class="close-button" onclick={handleClose}>Close</button>
+			<svelte:component
+				this={componentMappings[layer.componentName as keyof typeof componentMappings]}
+				{...layer.props}
+			/>
 		</div>
 	{/each}
 </div>

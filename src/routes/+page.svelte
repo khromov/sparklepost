@@ -11,23 +11,25 @@
 	import StackedMessages from '$lib/StackedMessages.svelte';
 	import { spaNavigation } from '$lib/stores/load';
 
-	let swiper: Swiper | null;
-	let swiperEl: HTMLElement;
+	let swiper = $state<Swiper | null>(null);
+	let swiperEl = $state<HTMLElement | null>(null);
 
-	let mounted = false;
+	let mounted = $state(false);
 
-	let stackedComponents: Array<{ componentName: any; props: any }> = [];
+	let stackedComponents = $state<Array<{ componentName: any; props: any }>>([]);
 
-	let scrollableViews: HTMLElement[] = [];
+	let scrollableViews = $state<HTMLElement[]>([]);
 
-	$: {
+	$effect(() => {
 		if ($page.state.stackedComponents) {
 			stackedComponents = $page.state.stackedComponents;
+		} else {
+			stackedComponents = [];
 		}
-	}
+	});
 
 	onMount(() => {
-		swiper = new Swiper(swiperEl, {
+		swiper = swiperEl ? new Swiper(swiperEl, {
 			direction: 'horizontal',
 			slidesPerView: 1,
 			speed: 400,
@@ -36,16 +38,20 @@
 			longSwipesRatio: 0.1,
 			on: {
 				slideChange: function (e) {
-					$activeTabIndex = e.activeIndex;
+					activeTabIndex.set(e.activeIndex);
 				}
 			}
-		});
+		}) : null;
 
 		// To avoid rerenders
 		mounted = true;
 	});
 
-	$: swiper && mounted && swiper?.slideTo($activeTabIndex);
+	$effect(() => {
+		if (swiper && mounted) {
+			swiper.slideTo($activeTabIndex);
+		}
+	});
 
 	function handleMessageClick(message: any) {
 		const currentComponents = $page.state.stackedComponents || [];
@@ -86,22 +92,23 @@
 					view.scrollTop = value.scrollPositions[index] ?? 0;
 				}
 			});
-			$activeTabIndex = value.activeTabIndex;
+			activeTabIndex.set(value.activeTabIndex);
 			swiper?.slideTo(value.activeTabIndex);
 		}
 	};
 </script>
 
 <div class="page-wrapper">
-	<div class="swiper" bind:this={swiperEl}>
+	<div class="swiper" bind:this={swiperEl} class:noInteraction={stackedComponents.length > 0}>
 		<div class="swiper-wrapper">
 			{#each Array(3) as _, i}
 				<div class="swiper-slide">
 					<ScrollableView bind:scrollableView={scrollableViews[i]}>
 						{#each Array(10) as _, x}
-							<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
+							<!-- svelte-ignore a11y_click_events_have_key_events -->
+							<!-- svelte-ignore a11y_no_static_element_interactions -->
 							<div
-								on:click={() =>
+								onclick={() =>
 									handleMessageClick({
 										name: 'User',
 										handle: '@user',
@@ -125,5 +132,11 @@
 	.page-wrapper {
 		overflow-y: hidden;
 		position: relative;
+	}
+
+	/* While the stacked messages are sliding in, you can accidentally tap on the swiper element
+		which leads to invalid state, so we disable interactions while the stacked messages are showing */
+	.swiper.noInteraction {
+		pointer-events: none;
 	}
 </style>

@@ -5,6 +5,10 @@
 	import { beforeNavigate, goto, onNavigate, pushState } from '$app/navigation';
 	import { activeTabIndex } from '$lib/stores/tab';
 	import { spaNavigation } from '$lib/stores/load';
+	import OnlineBanner from '$lib/OnlineBanner.svelte';
+	import type { Snippet } from 'svelte';
+
+	let { children }: { children?: Snippet } = $props();
 
 	beforeNavigate((navigation) => {
 		// If we have navigated at least once, we are in SPA mode
@@ -36,7 +40,9 @@
 		});
 	});
 
-	const handleLogoClick = () => {
+	const handleLogoClick = (e: any) => {
+		e.preventDefault();
+
 		// Clear the stack of components
 		if($page.url.pathname === '/' && $page.state.stackedComponents && $page.state.stackedComponents.length > 0) {
 			pushState('', { stackedComponents: [] });
@@ -52,12 +58,14 @@
 
 <main>
 	<header>
-		<div class="profile-icon" />
+		<div class="profile-icon">
+			<img src="/avatars/1.svg" alt="Profile" />
+		</div>
 		<div class="logo">
-			<a href="/" on:click|preventDefault={handleLogoClick}>🙈</a>
+			<a href="/" onclick={handleLogoClick}>✨</a>
 		</div>
 		<a href="/settings">
-			<div class="settings-icon" />
+			<div class="settings-icon">
 		</a>
 	</header>
 
@@ -65,15 +73,19 @@
 		<Nav />
 	{/if}
 
+	<OnlineBanner />
+
 	<div class="content">
-		<slot />
+		{#if children}
+			{@render children()}
+		{/if}
 	</div>
 
 	<footer>
-		<button class="home-icon" on:click={handleBottomMockClick} />
-		<button class="search-icon" on:click={handleBottomMockClick} />
-		<button class="notifications-icon" on:click={handleBottomMockClick} />
-		<button class="messages-icon" on:click={handleBottomMockClick} />
+		<button class="home-icon" onclick={handleBottomMockClick}></button>
+		<button class="search-icon" onclick={handleBottomMockClick}></button>
+		<button class="notifications-icon" onclick={handleBottomMockClick}></button>
+		<button class="messages-icon" onclick={handleBottomMockClick}></button>
 	</footer>
 </main>
 
@@ -91,6 +103,7 @@
 		background-color: black;
 		color: white;
 		height: 100vh;
+		height: 100dvh;
 		display: flex;
 		flex-direction: column;
 	}
@@ -109,7 +122,6 @@
 	.content {
 		flex-grow: 1;
 		overflow-y: hidden;
-		/* overflow-y: auto; */
 	}
 
 	.profile-icon,
@@ -118,6 +130,10 @@
 		height: 30px;
 		border-radius: 50%;
 		background-color: #333;
+	}
+
+	.profile-icon img {
+		border-radius: 50%;
 	}
 
 	.logo {
@@ -159,6 +175,7 @@
 	}
 
 	footer {
+		view-transition-name: footer;
 		display: flex;
 		justify-content: space-around;
 		padding: 10px 0;
