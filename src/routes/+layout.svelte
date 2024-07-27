@@ -37,7 +37,9 @@
 		});
 	});
 
-	const handleLogoClick = () => {
+	const handleLogoClick = (e: any) => {
+		e.preventDefault();
+
 		// Clear the stack of components
 		if($page.url.pathname === '/' && $page.state.stackedComponents && $page.state.stackedComponents.length > 0) {
 			pushState('', { stackedComponents: [] });
@@ -55,7 +57,7 @@
 	<header>
 		<div class="profile-icon"></div>
 		<div class="logo">
-			<a href="/" on:click|preventDefault={handleLogoClick}>✨</a>
+			<a href="/" onclick={handleLogoClick}>✨</a>
 		</div>
 		<a href="/settings">
 			<div class="settings-icon">
@@ -73,10 +75,10 @@
 	</div>
 
 	<footer>
-		<button class="home-icon" on:click={handleBottomMockClick}></button>
-		<button class="search-icon" on:click={handleBottomMockClick}></button>
-		<button class="notifications-icon" on:click={handleBottomMockClick}></button>
-		<button class="messages-icon" on:click={handleBottomMockClick}></button>
+		<button class="home-icon" onclick={handleBottomMockClick}></button>
+		<button class="search-icon" onclick={handleBottomMockClick}></button>
+		<button class="notifications-icon" onclick={handleBottomMockClick}></button>
+		<button class="messages-icon" onclick={handleBottomMockClick}></button>
 	</footer>
 </main>
 
