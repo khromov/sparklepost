@@ -7,6 +7,7 @@ declare global {
 		// interface PageData {}
 		interface PageState {
 			stackedComponents: Array<{ componentName: any; props: any }>;
+			scrollPositions: number[];
 		}
 		// interface Platform {}
 	}

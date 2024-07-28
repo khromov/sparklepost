@@ -40,6 +40,8 @@
 		const currentComponents = $page.state.stackedComponents || [];
 		const currentScrollPositions = $page.state.scrollPositions || [];
 
+		console.log('currentScrollPositions:', currentScrollPositions);
+
 		const newComponents = [
 			...currentComponents,
 			{
