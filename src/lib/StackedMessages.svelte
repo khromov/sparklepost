@@ -2,6 +2,8 @@
 	import { fly } from 'svelte/transition';
 	import { pushState } from '$app/navigation';
 	import MessageWithComments from './MessageWithComments.svelte';
+	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
 
 	interface ComponentProps {
 		componentName: string;
@@ -15,16 +17,35 @@
 		// Add other components here as needed
 	};
 
+	let messageLayerRefs: HTMLDivElement[] = [];
+
 	function handleClose() {
 		if (components.length > 0) {
 			const newComponents = $state.snapshot(components).slice(0, -1);
-			pushState('', { stackedComponents: newComponents });
+			const scrollPositions = messageLayerRefs.map(ref => ref?.scrollTop ?? 0);
+			pushState('', { 
+				stackedComponents: newComponents,
+				scrollPositions: scrollPositions.slice(0, -1)
+			});
 		}
 	}
 
 	let topComponents = $derived.by(() => {
 		// Ensure only the top messages are rendered
 		return components.slice(-2).reverse();
+	});
+
+	$effect(() => {
+		const scrollPositions = $page.state.scrollPositions;
+		console.log('scrollPositions:', scrollPositions);
+		if (Array.isArray(scrollPositions)) {
+			messageLayerRefs.forEach((ref, index) => {
+				if (ref && scrollPositions[index] !== undefined) {
+					//ref.scrollTop = scrollPositions[index];
+					ref.scrollTop = 20;
+				}
+			});
+		}
 	});
 </script>
 
@@ -35,6 +56,7 @@
 			style="z-index: {components.length - index}"
 			in:fly={{ x: 300, duration: 200 }}
 			out:fly={{ x: 300, duration: 200 }}
+			bind:this={messageLayerRefs[index]}
 		>
 			<button class="close-button" onclick={handleClose}>Close</button>
 			<svelte:component
