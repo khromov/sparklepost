@@ -38,6 +38,8 @@
 
 	function handleCommentClick(comment: Comment) {
 		const currentComponents = $page.state.stackedComponents || [];
+		const currentScrollPositions = $page.state.scrollPositions || [];
+
 		const newComponents = [
 			...currentComponents,
 			{
@@ -54,7 +56,10 @@
 				}
 			}
 		];
-		pushState('', { stackedComponents: newComponents });
+		pushState('', {
+			 stackedComponents: newComponents,
+			 scrollPositions: [...currentScrollPositions, 0]
+		});
 	}
 </script>
 
