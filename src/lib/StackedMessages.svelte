@@ -22,8 +22,8 @@
 	function handleClose() {
 		if (components.length > 0) {
 			const newComponents = $state.snapshot(components).slice(0, -1);
-			const scrollPositions = messageLayerRefs.map(ref => ref?.scrollTop ?? 0);
-			pushState('', { 
+			const scrollPositions = messageLayerRefs.map((ref) => ref?.scrollTop ?? 0);
+			pushState('', {
 				stackedComponents: newComponents,
 				scrollPositions: scrollPositions.slice(0, -1)
 			});
