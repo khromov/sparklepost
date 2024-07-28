@@ -1,17 +1,16 @@
 # SparklePost
 
-SparklePost is a demo application used to show of interface patterns that are commonly found in native iOS and Android apps using modern web development techniques. 
+SparklePost is a demo application that implements interface patterns commonly found in native iOS and Android apps, using modern and performant web development techniques. It is written in SvelteKit, but the same techniques can be implemented in any JavaScript framework.
 
 Try the demo yourself at: https://sparklepost.vercel.app/ (works best on mobile)
 
 ![Screen Recording 2024-07-28 at 04 18 14](https://github.com/user-attachments/assets/0054ed3d-c744-4d5d-bdf2-284c6bf8c5a8)
 
-
 ## Features
 
 * Swipeable tabs navigation with maintained scroll position in each tab (SwiperJS)
 * Stacked message threads with back support - click on a single tweet to initiate stack (SvetleKit Shallow Routing and partial DOM rendering)
-* State restoration when using back navigation (SvelteKit Snapshots)
+* Scroll & tab restoration when using back navigation (SvelteKit Snapshots)
 * Installation & Offline support (PWA, Service Worker & online/offline event)
 * Native-like navigation transitions (View Transitions API)
 
